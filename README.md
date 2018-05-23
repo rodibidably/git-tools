@@ -1,5 +1,7 @@
 # git-tools
-**This is a .NET application that acts as a wrapper around many of the popular git-summary Forks listed below**
+**This is a .NET application that acts as a wrapper around many popular git functions from the Forks listed below**
+
+## git-summary
 
 **If you ever experienced one of the following situations, git-summary is for you.**
 
