@@ -16,6 +16,7 @@ namespace git_tools
         {
             InitializeComponent();
         }
+        // Load Page | Browse for Git Location
         private void GitTools_Load(object sender, EventArgs e)
         {
             pathGit = "C:\\Program Files\\Git";
@@ -34,124 +35,6 @@ namespace git_tools
                 pathGit = Path.GetDirectoryName(ofdGit.FileName);
                 LoadGitTools();
             }
-        }
-        private void lnkGitLocation_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (!Directory.Exists(pathGit))
-            {
-                MessageBox.Show("Path does not exist. Please Browse for the Git installation directory.", "Path does not exist.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            else
-            {
-                Process.Start(pathGit);
-            }
-        }
-        private void lnkGitTools_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/rodibidably/git-tools");
-        }
-        private void lnkGitSummaryRoot_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (!Directory.Exists(lnkGitSummaryRoot.Text))
-            {
-                MessageBox.Show("Path does not exist. Please Browse for another Folder.", "Path does not exist.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            else
-            {
-                Process.Start(lnkGitSummaryRoot.Text);
-            }
-        }
-        private void btnGitSummary_Click(object sender, EventArgs e)
-        {
-            if (ConfigurationManager.AppSettings["LastPath"] != "")
-            {
-                fbdPath.SelectedPath = ConfigurationManager.AppSettings["LastPath"];
-            }
-            if (fbdPath.ShowDialog() == DialogResult.OK)
-            {
-                Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                configuration.AppSettings.Settings["LastPath"].Value = fbdPath.SelectedPath;
-                configuration.Save(ConfigurationSaveMode.Full, true);
-                ConfigurationManager.RefreshSection("appSettings");
-//                ConfigurationManager.AppSettings["LastPath"] = fbdPath.SelectedPath;
-                lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
-                lblGitSummaryOptions.Text = chkLocalSummary.Text + "=" + chkLocalSummary.Checked;
-                lblGitSummaryOptions.Text += " | " + chkDeepLookup.Text + "=" + chkDeepLookup.Checked;
-                tblGitData = new DataTable();
-                tblGitData.Columns.Add("Folder", typeof(string));
-                tblGitData.Columns.Add("Branch", typeof(string));
-                tblGitData.Columns.Add("Status", typeof(string));
-                if (!tabNav.TabPages.Contains(tabGitSummary))
-                {
-                    tabNav.TabPages.Add(tabGitSummary);
-                    tabNav.SelectedTab = tabGitSummary;
-                }
-                ProcessFolder(lnkGitSummaryRoot.Text);
-                GitSummarySearch(lnkGitSummaryRoot.Text);
-                dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                dgvGitSummary.DataSource = tblGitData;
-            }
-        }
-        private void btnGitBranchStatus_Click(object sender, EventArgs e)
-        {
-            // 
-            if (!tabNav.TabPages.Contains(tabGitBranchStatus))
-            {
-                tabNav.TabPages.Add(tabGitBranchStatus);
-                tabNav.SelectedTab = tabGitBranchStatus;
-            }
-        }
-        private void GitSummarySearch(string directory)
-        {
-            foreach (string subDir in Directory.GetDirectories(directory))
-            {
-                if (!ProcessFolder(subDir) && chkDeepLookup.Checked)
-                {
-                    GitSummarySearch(subDir);
-                }
-            }
-        }
-        private bool ProcessFolder(string path)
-        {
-            bool boolReturn = false;
-
-            RunGitCommand("status", path);
-            if (stdError == "")
-            {
-                // Parse stdOutput
-                string folder = path.Substring(lnkGitSummaryRoot.Text.Length);
-                // local branch_name=`git -C $f "`
-                string state = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
-                if (state.IndexOf("Your branch is up to date with 'origin/master'.\n\n") == 0)
-                {
-                    state = state.Substring(state.IndexOf("\n") + 2);
-                }
-                if (state.Substring(state.Length - 1) == "\n")
-                {
-                    state = state.Substring(0, state.Length - 1);
-                }
-                RunGitCommand("symbolic-ref HEAD", path);
-                string branch = stdOutput.Substring("refs/heads/".Length);
-                branch = branch.Substring(0, branch.Length - 1);
-                if (state != "nothing to commit, working tree clean\n")
-                {
-                    //RunGitCommand("rev-parse --abbrev-ref", subDir);
-                    //stdOutput = stdOutput;
-                    if (!chkLocalSummary.Checked)
-                    {
-                        RunGitCommand("fetch -q", path);
-                        stdOutput = stdOutput;
-                    }
-                    //RunGitCommand("log --pretty=format:'%h' ..@{u}", subDir);
-                    //stdOutput = stdOutput;
-                    //RunGitCommand("log --pretty=format:'%h' @{u}..", subDir);
-                    //stdOutput = stdOutput;
-                }
-                tblGitData.Rows.Add(folder, branch, state);//.Replace("\n", Environment.NewLine));
-                boolReturn = true;
-            }
-
-            return boolReturn;
         }
         private void LoadGitTools()
         {
@@ -195,6 +78,135 @@ namespace git_tools
                 }
             }
         }
+        private bool GitInstalled()
+        {
+            bool boolReturn = false;
+
+            if (Directory.Exists(pathGit))
+            {
+                if (File.Exists(pathGit + "\\git-cmd.exe"))
+                {
+                    boolReturn = true;
+                }
+            }
+
+            return boolReturn;
+        }
+        // Clickable Links
+        private void lnkGitLocation_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!Directory.Exists(pathGit))
+            {
+                MessageBox.Show("Path does not exist. Please Browse for the Git installation directory.", "Path does not exist.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+            {
+                Process.Start(pathGit);
+            }
+        }
+        private void lnkGitTools_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/rodibidably/git-tools");
+        }
+        private void lnkGitSummaryRoot_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!Directory.Exists(lnkGitSummaryRoot.Text))
+            {
+                MessageBox.Show("Path does not exist. Please Browse for another Folder.", "Path does not exist.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+            {
+                Process.Start(lnkGitSummaryRoot.Text);
+            }
+        }
+        // git-summary
+        private void btnGitSummary_Click(object sender, EventArgs e)
+        {
+            if (ConfigurationManager.AppSettings["LastPath"] != "")
+            {
+                fbdPath.SelectedPath = ConfigurationManager.AppSettings["LastPath"];
+            }
+            if (fbdPath.ShowDialog() == DialogResult.OK)
+            {
+                Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                configuration.AppSettings.Settings["LastPath"].Value = fbdPath.SelectedPath;
+                configuration.Save(ConfigurationSaveMode.Full, true);
+                ConfigurationManager.RefreshSection("appSettings");
+//                ConfigurationManager.AppSettings["LastPath"] = fbdPath.SelectedPath;
+                lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
+                lblGitSummaryOptions.Text = chkLocalSummary.Text + "=" + chkLocalSummary.Checked;
+                lblGitSummaryOptions.Text += " | " + chkDeepLookup.Text + "=" + chkDeepLookup.Checked;
+                tblGitData = new DataTable();
+                tblGitData.Columns.Add("Folder", typeof(string));
+                tblGitData.Columns.Add("Branch", typeof(string));
+                tblGitData.Columns.Add("Status", typeof(string));
+                if (!tabNav.TabPages.Contains(tabGitSummary))
+                {
+                    tabNav.TabPages.Add(tabGitSummary);
+                    tabNav.SelectedTab = tabGitSummary;
+                }
+                ProcessFolder(lnkGitSummaryRoot.Text);
+                GitSummarySearch(lnkGitSummaryRoot.Text);
+                dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                dgvGitSummary.DataSource = tblGitData;
+            }
+        }
+        private void GitSummarySearch(string directory)
+        {
+            foreach (string subDir in Directory.GetDirectories(directory))
+            {
+                if (!ProcessFolder(subDir) && chkDeepLookup.Checked)
+                {
+                    GitSummarySearch(subDir);
+                }
+            }
+        }
+        private bool ProcessFolder(string path)
+        {
+            bool boolReturn = false;
+
+            RunGitCommand("status", path);
+            if (stdError == "")
+            {
+                if (!chkLocalSummary.Checked)
+                {
+                    RunGitCommand("fetch -q", path);
+                    if (stdOutput != "" || stdError != "")
+                    {
+                        stdOutput = stdOutput;
+                    }
+                    RunGitCommand("status", path);
+                }
+                // Parse stdOutput
+                string folder = path.Substring(lnkGitSummaryRoot.Text.Length);
+                // local branch_name=`git -C $f "`
+                string state = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
+                if (state.IndexOf("Your branch is up to date with 'origin/master'.\n\n") == 0)
+                {
+                    state = state.Substring(state.IndexOf("\n") + 2);
+                }
+                if (state.Substring(state.Length - 1) == "\n")
+                {
+                    state = state.Substring(0, state.Length - 1);
+                }
+                RunGitCommand("symbolic-ref HEAD", path);
+                string branch = stdOutput.Substring("refs/heads/".Length);
+                branch = branch.Substring(0, branch.Length - 1);
+//                if (state != "nothing to commit, working tree clean\n")
+//                {
+//                    //RunGitCommand("rev-parse --abbrev-ref", subDir);
+//                    //stdOutput = stdOutput;
+//                    //RunGitCommand("log --pretty=format:'%h' ..@{u}", subDir);
+//                    //stdOutput = stdOutput;
+//                    //RunGitCommand("log --pretty=format:'%h' @{u}..", subDir);
+//                    //stdOutput = stdOutput;
+//                }
+                tblGitData.Rows.Add(folder, branch, state);//.Replace("\n", Environment.NewLine));
+                boolReturn = true;
+            }
+
+            return boolReturn;
+        }
         private void RunGitCommand(string command, string workingDirectory)
         {
             ProcessStartInfo gitInfo = new ProcessStartInfo();
@@ -216,19 +228,22 @@ namespace git_tools
             gitProcess.WaitForExit();
             gitProcess.Close();
         }
-        private bool GitInstalled()
+        private void dgvGitSummary_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            bool boolReturn = false;
-
-            if (Directory.Exists(pathGit))
+            if (e.RowIndex >= 0 && e.ColumnIndex == 0)
             {
-                if (File.Exists(pathGit + "\\git-cmd.exe"))
-                {
-                    boolReturn = true;
-                }
+                Process.Start(lnkGitSummaryRoot.Text + dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
             }
-
-            return boolReturn;
+        }
+        // git-branch-status
+        private void btnGitBranchStatus_Click(object sender, EventArgs e)
+        {
+            // 
+            if (!tabNav.TabPages.Contains(tabGitBranchStatus))
+            {
+                tabNav.TabPages.Add(tabGitBranchStatus);
+                tabNav.SelectedTab = tabGitBranchStatus;
+            }
         }
     }
 }

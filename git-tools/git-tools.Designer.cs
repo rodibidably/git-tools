@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabNav = new System.Windows.Forms.TabControl();
             this.tabGitTools = new System.Windows.Forms.TabPage();
             this.chkDeepLookup = new System.Windows.Forms.CheckBox();
@@ -108,7 +109,6 @@
             this.chkLocalSummary.AutoSize = true;
             this.chkLocalSummary.Checked = true;
             this.chkLocalSummary.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkLocalSummary.Enabled = false;
             this.chkLocalSummary.Location = new System.Drawing.Point(9, 71);
             this.chkLocalSummary.Name = "chkLocalSummary";
             this.chkLocalSummary.Size = new System.Drawing.Size(98, 17);
@@ -227,6 +227,7 @@
             this.dgvGitSummary.ReadOnly = true;
             this.dgvGitSummary.Size = new System.Drawing.Size(687, 315);
             this.dgvGitSummary.TabIndex = 15;
+            this.dgvGitSummary.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGitSummary_CellContentClick);
             // 
             // tabGitBranchStatus
             // 
@@ -321,8 +322,12 @@
             // Folder
             // 
             this.Folder.DataPropertyName = "Folder";
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Blue;
+            this.Folder.DefaultCellStyle = dataGridViewCellStyle1;
             this.Folder.HeaderText = "Folder";
             this.Folder.Name = "Folder";
+            this.Folder.ReadOnly = true;
             this.Folder.Width = 61;
             // 
             // Branch
@@ -330,6 +335,7 @@
             this.Branch.DataPropertyName = "Branch";
             this.Branch.HeaderText = "Branch";
             this.Branch.Name = "Branch";
+            this.Branch.ReadOnly = true;
             this.Branch.Width = 66;
             // 
             // Status
@@ -337,6 +343,7 @@
             this.Status.DataPropertyName = "Status";
             this.Status.HeaderText = "Status";
             this.Status.Name = "Status";
+            this.Status.ReadOnly = true;
             this.Status.Width = 62;
             // 
             // GitTools
