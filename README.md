@@ -13,6 +13,7 @@
 * Did I commit that quick change I made before the pizza delivery guy rang my door?
 
 #### ToDo:
+- When LocalSummary is uncheked, run `git fetch`
 - Make git-summary run as a background process and give a progress bar / status
 - Pre-define table and make the folder clickable to dive in to more info
 - Cleanup State, to be easier to read
