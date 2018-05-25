@@ -55,6 +55,9 @@
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.fbdPath = new System.Windows.Forms.FolderBrowserDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.Folder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Branch = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -214,7 +217,11 @@
             this.dgvGitSummary.AllowUserToAddRows = false;
             this.dgvGitSummary.AllowUserToDeleteRows = false;
             this.dgvGitSummary.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvGitSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvGitSummary.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvGitSummary.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Folder,
+            this.Branch,
+            this.Status});
             this.dgvGitSummary.Location = new System.Drawing.Point(6, 32);
             this.dgvGitSummary.Name = "dgvGitSummary";
             this.dgvGitSummary.ReadOnly = true;
@@ -311,6 +318,27 @@
             this.fbdPath.RootFolder = System.Environment.SpecialFolder.MyComputer;
             this.fbdPath.ShowNewFolderButton = false;
             // 
+            // Folder
+            // 
+            this.Folder.DataPropertyName = "Folder";
+            this.Folder.HeaderText = "Folder";
+            this.Folder.Name = "Folder";
+            this.Folder.Width = 61;
+            // 
+            // Branch
+            // 
+            this.Branch.DataPropertyName = "Branch";
+            this.Branch.HeaderText = "Branch";
+            this.Branch.Name = "Branch";
+            this.Branch.Width = 66;
+            // 
+            // Status
+            // 
+            this.Status.DataPropertyName = "Status";
+            this.Status.HeaderText = "Status";
+            this.Status.Name = "Status";
+            this.Status.Width = 62;
+            // 
             // GitTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -370,6 +398,9 @@
         private System.Windows.Forms.LinkLabel lnkGitSummaryRoot;
         private System.Windows.Forms.Label lblGitSummaryOptions;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Folder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Branch;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Status;
     }
 }
 

@@ -80,13 +80,15 @@ namespace git_tools
                 tblGitData = new DataTable();
                 tblGitData.Columns.Add("Folder", typeof(string));
                 tblGitData.Columns.Add("Branch", typeof(string));
-                tblGitData.Columns.Add("State", typeof(string));
+                tblGitData.Columns.Add("Status", typeof(string));
                 if (!tabNav.TabPages.Contains(tabGitSummary))
                 {
                     tabNav.TabPages.Add(tabGitSummary);
                     tabNav.SelectedTab = tabGitSummary;
                 }
+                ProcessFolder(lnkGitSummaryRoot.Text);
                 GitSummarySearch(lnkGitSummaryRoot.Text);
+                dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgvGitSummary.DataSource = tblGitData;
             }
         }
@@ -103,37 +105,53 @@ namespace git_tools
         {
             foreach (string subDir in Directory.GetDirectories(directory))
             {
-                RunGitCommand("status", subDir);
-                if (stdError == "")
-                {
-                    // Parse stdOutput
-                    string folder = subDir.Substring(lnkGitSummaryRoot.Text.Length);
-                    // local branch_name=`git -C $f "`
-                    string state = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
-                    state = state.Substring(state.IndexOf("\n") + 2);
-                    RunGitCommand("symbolic-ref HEAD", subDir);
-                    string branch = stdOutput.Substring("refs/heads/".Length);
-                    if (state != "nothing to commit, working tree clean\n")
-                    {
-                        //RunGitCommand("rev-parse --abbrev-ref", subDir);
-                        //stdOutput = stdOutput;
-                        if (!chkLocalSummary.Checked)
-                        {
-                            RunGitCommand("fetch -q", subDir);
-                            stdOutput = stdOutput;
-                        }
-                        //RunGitCommand("log --pretty=format:'%h' ..@{u}", subDir);
-                        //stdOutput = stdOutput;
-                        //RunGitCommand("log --pretty=format:'%h' @{u}..", subDir);
-                        //stdOutput = stdOutput;
-                    }
-                    tblGitData.Rows.Add(folder, branch, state);
-                }
-                if (stdError != "" && chkDeepLookup.Checked)
+                if (!ProcessFolder(subDir) && chkDeepLookup.Checked)
                 {
                     GitSummarySearch(subDir);
                 }
             }
+        }
+        private bool ProcessFolder(string path)
+        {
+            bool boolReturn = false;
+
+            RunGitCommand("status", path);
+            if (stdError == "")
+            {
+                // Parse stdOutput
+                string folder = path.Substring(lnkGitSummaryRoot.Text.Length);
+                // local branch_name=`git -C $f "`
+                string state = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
+                if (state.IndexOf("Your branch is up to date with 'origin/master'.\n\n") == 0)
+                {
+                    state = state.Substring(state.IndexOf("\n") + 2);
+                }
+                if (state.Substring(state.Length - 1) == "\n")
+                {
+                    state = state.Substring(0, state.Length - 1);
+                }
+                RunGitCommand("symbolic-ref HEAD", path);
+                string branch = stdOutput.Substring("refs/heads/".Length);
+                branch = branch.Substring(0, branch.Length - 1);
+                if (state != "nothing to commit, working tree clean\n")
+                {
+                    //RunGitCommand("rev-parse --abbrev-ref", subDir);
+                    //stdOutput = stdOutput;
+                    if (!chkLocalSummary.Checked)
+                    {
+                        RunGitCommand("fetch -q", path);
+                        stdOutput = stdOutput;
+                    }
+                    //RunGitCommand("log --pretty=format:'%h' ..@{u}", subDir);
+                    //stdOutput = stdOutput;
+                    //RunGitCommand("log --pretty=format:'%h' @{u}..", subDir);
+                    //stdOutput = stdOutput;
+                }
+                tblGitData.Rows.Add(folder, branch, state);//.Replace("\n", Environment.NewLine));
+                boolReturn = true;
+            }
+
+            return boolReturn;
         }
         private void LoadGitTools()
         {
