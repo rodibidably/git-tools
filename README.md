@@ -12,6 +12,12 @@
 * Did someone pushed new commits to `origin/master` in one of my repos?
 * Did I commit that quick change I made before the pizza delivery guy rang my door?
 
+#### ToDo:
+- Make git-summary run as a background process and give a progress bar / status
+- Pre-define table and make the folder clickable to dive in to more info
+- Cleanup State, to be easier to read
+- 
+
 #### Credits
 A big thanks to the folks that wrote the (Linux) version of `git-summary` that this borrowed from:
 * [MirkoLedda](https://github.com/MirkoLedda/git-summary)
