@@ -5,16 +5,16 @@
 
 **git-summary will neatly list the current status of any git repos it finds within any directory (and sub directories) on your system**
 
-#### Credits
-A big thanks to the folks that wrote the original (Linux) version of `git-summary` that I borrowed from:
-* [MirkoLedda](https://github.com/MirkoLedda/git-summary)
-
 **If you ever experienced one of the following situations, git-summary is for you.**
 * I don't remember where some of my repositories are...
 * Did I forgot to push that commit?
 * Do I have a repo in my system that is outdated?
 * Did someone pushed new commits to `origin/master` in one of my repos?
 * Did I commit that quick change I made before the pizza delivery guy rang my door?
+
+#### Credits
+A big thanks to the folks that wrote the original (Linux) version of `git-summary` that I borrowed from:
+* [MirkoLedda](https://github.com/MirkoLedda/git-summary)
 
 ## Branch status
 **Coming next in development**
