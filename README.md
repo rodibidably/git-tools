@@ -13,7 +13,7 @@
 * Did I commit that quick change I made before the pizza delivery guy rang my door?
 
 #### Credits
-A big thanks to the folks that wrote the original (Linux) version of `git-summary` that I borrowed from:
+A big thanks to the folks that wrote the (Linux) version of `git-summary` that this borrowed from:
 * [MirkoLedda](https://github.com/MirkoLedda/git-summary)
 
 ## Branch status
