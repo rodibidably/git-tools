@@ -11,8 +11,13 @@
 - Did someone push new commits to `origin/master` in one of my repos?
 - Did I commit that quick change I made before the delivery guy rang my door?
 
+#### Options
+- **Folder Selection** - The folder to run git-summary against.
+- **Local Summary** (default = true) - Checks only local changes (no Fetch first), which is faster.
+- **Deep Lookup** (default = false) - Will look for Git repos recursivly within the directory tree (does not search sub folders under a Git repo). Can be slow for large trees.
+
 #### ToDo:
-- Pre-define table and make the folder clickable to dive in to more info
+- Make the folder clickable to dive in to more info
 - When LocalSummary is uncheked, run `git fetch`
 - Make git-summary run as a background process and give a progress bar / status
 - Cleanup State, to be easier to read
