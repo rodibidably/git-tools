@@ -12,7 +12,7 @@ namespace git_tools
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GitTools());
+            Application.Run(new Git_Tools());
         }
     }
 }

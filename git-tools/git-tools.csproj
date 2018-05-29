@@ -68,8 +68,10 @@
     <Compile Include="git-tools.Designer.cs">
       <DependentUpon>git-tools.cs</DependentUpon>
     </Compile>
+    <Compile Include="GitTools.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository.cs" />
     <EmbeddedResource Include="git-tools.resx">
       <DependentUpon>git-tools.cs</DependentUpon>
     </EmbeddedResource>
