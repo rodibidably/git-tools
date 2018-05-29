@@ -19,7 +19,7 @@
 #### ToDo:
 - Make git-summary run as a background process and give a progress bar / status
 - Cleanup Status, to be easier to read
-  - Split Status into individual fields for Counts?
+  - Split Status into individual values for Counts?
 
 #### Credits
 A big thanks to the folks that wrote the (Linux) version of `git-summary` that this borrowed from:
