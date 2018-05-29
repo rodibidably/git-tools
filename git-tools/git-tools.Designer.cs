@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabNav = new System.Windows.Forms.TabControl();
             this.tabGitTools = new System.Windows.Forms.TabPage();
             this.chkDeepLookup = new System.Windows.Forms.CheckBox();
@@ -58,6 +58,8 @@
             this.lnkGitInstall = new System.Windows.Forms.LinkLabel();
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.fbdPath = new System.Windows.Forms.FolderBrowserDialog();
+            this.bwGitSummary = new System.ComponentModel.BackgroundWorker();
+            this.lblGitSummaryProgress = new System.Windows.Forms.Label();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -180,6 +182,7 @@
             // 
             // tabGitSummary
             // 
+            this.tabGitSummary.Controls.Add(this.lblGitSummaryProgress);
             this.tabGitSummary.Controls.Add(this.lblGitSummaryOptions);
             this.tabGitSummary.Controls.Add(this.lnkGitSummaryRoot);
             this.tabGitSummary.Controls.Add(this.dgvGitSummary);
@@ -226,14 +229,15 @@
             this.dgvGitSummary.ReadOnly = true;
             this.dgvGitSummary.Size = new System.Drawing.Size(687, 315);
             this.dgvGitSummary.TabIndex = 15;
+            this.dgvGitSummary.Visible = false;
             this.dgvGitSummary.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGitSummary_CellContentClick);
             // 
             // Folder
             // 
             this.Folder.DataPropertyName = "Folder";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Blue;
-            this.Folder.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Blue;
+            this.Folder.DefaultCellStyle = dataGridViewCellStyle6;
             this.Folder.HeaderText = "Folder";
             this.Folder.Name = "Folder";
             this.Folder.ReadOnly = true;
@@ -346,6 +350,25 @@
             this.fbdPath.RootFolder = System.Environment.SpecialFolder.MyComputer;
             this.fbdPath.ShowNewFolderButton = false;
             // 
+            // bwGitSummary
+            // 
+            this.bwGitSummary.WorkerReportsProgress = true;
+            this.bwGitSummary.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwGitSummary_DoWork);
+            this.bwGitSummary.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwGitSummary_ProgressChanged);
+            this.bwGitSummary.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwGitSummary_RunWorkerCompleted);
+            // 
+            // lblGitSummaryProgress
+            // 
+            this.lblGitSummaryProgress.AutoSize = true;
+            this.lblGitSummaryProgress.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblGitSummaryProgress.Location = new System.Drawing.Point(6, 79);
+            this.lblGitSummaryProgress.MinimumSize = new System.Drawing.Size(687, 0);
+            this.lblGitSummaryProgress.Name = "lblGitSummaryProgress";
+            this.lblGitSummaryProgress.Size = new System.Drawing.Size(687, 13);
+            this.lblGitSummaryProgress.TabIndex = 17;
+            this.lblGitSummaryProgress.Text = "lblGitSummaryProgress";
+            this.lblGitSummaryProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Git_Tools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -407,6 +430,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Folder;
         private System.Windows.Forms.DataGridViewTextBoxColumn Branch;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
+        private System.ComponentModel.BackgroundWorker bwGitSummary;
+        private System.Windows.Forms.Label lblGitSummaryProgress;
     }
 }
 

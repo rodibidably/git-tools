@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -115,31 +116,70 @@ namespace git_tools
         // git-summary
         private void btnGitSummary_Click(object sender, EventArgs e)
         {
-            // Set Default Path to the last path used
-            if (ConfigurationManager.AppSettings["LastPath"] != "")
+            // Do not allow new process to begin before old process has ended
+            if (bwGitSummary.IsBusy != true)
             {
-                fbdPath.SelectedPath = ConfigurationManager.AppSettings["LastPath"];
-            }
-            // Display the Open Folder Dialog
-            if (fbdPath.ShowDialog() == DialogResult.OK)
-            {
-                // Write last path used to app.config
-                Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                configuration.AppSettings.Settings["LastPath"].Value = fbdPath.SelectedPath;
-                configuration.Save(ConfigurationSaveMode.Full, true);
-                ConfigurationManager.RefreshSection("appSettings");
-//                ConfigurationManager.AppSettings["LastPath"] = fbdPath.SelectedPath;
-                // Cleanup form (to selected values) before processing
-                lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
-                lblGitSummaryOptions.Text = chkLocalSummary.Text + "=" + chkLocalSummary.Checked;
-                lblGitSummaryOptions.Text += " | " + chkDeepLookup.Text + "=" + chkDeepLookup.Checked;
-                if (!tabNav.TabPages.Contains(tabGitSummary))
+                // Set Default Path to the last path used
+                if (ConfigurationManager.AppSettings["LastPath"] != "")
                 {
-                    tabNav.TabPages.Add(tabGitSummary);
-                    tabNav.SelectedTab = tabGitSummary;
+                    fbdPath.SelectedPath = ConfigurationManager.AppSettings["LastPath"];
                 }
-                // Recursively run through selected path and load DataGrid with results
-                dgvGitSummary.DataSource = gt.GetRepos(lnkGitSummaryRoot.Text, chkLocalSummary.Checked, chkDeepLookup.Checked);
+                // Display the Open Folder Dialog
+                if (fbdPath.ShowDialog() == DialogResult.OK)
+                {
+                    // Write last path used to app.config
+                    Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    configuration.AppSettings.Settings["LastPath"].Value = fbdPath.SelectedPath;
+                    configuration.Save(ConfigurationSaveMode.Full, true);
+                    ConfigurationManager.RefreshSection("appSettings");
+//                    ConfigurationManager.AppSettings["LastPath"] = fbdPath.SelectedPath;
+                    // Cleanup form (to default / selected values) before processing
+                    lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
+                    lblGitSummaryOptions.Text = chkLocalSummary.Text + "=" + chkLocalSummary.Checked;
+                    lblGitSummaryOptions.Text += " | " + chkDeepLookup.Text + "=" + chkDeepLookup.Checked;
+                    if (!tabNav.TabPages.Contains(tabGitSummary))
+                    {
+                        tabNav.TabPages.Add(tabGitSummary);
+                    }
+                    tabNav.SelectedTab = tabGitSummary;
+                    lblGitSummaryProgress.Visible = true;
+                    lblGitSummaryProgress.Text = ("0%");
+                    dgvGitSummary.Visible = false;
+                    // Start the asynchronous operation (essentially: bwGitSummary_DoWork)
+                    bwGitSummary.RunWorkerAsync();
+                }
+            }
+        }
+        private void bwGitSummary_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            // This event handler is where the time-consuming work is done
+            BackgroundWorker worker = sender as BackgroundWorker;
+            // Recursively run through selected path to build List<>
+            gt.GetRepos(ref worker, lnkGitSummaryRoot.Text, chkLocalSummary.Checked, chkDeepLookup.Checked);
+        }
+        private void bwGitSummary_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            // This event handler updates the progress
+            lblGitSummaryProgress.Text = (e.ProgressPercentage.ToString() + "%");
+        }
+        private void bwGitSummary_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            // This event handler deals with the results of the background operation
+            if (e.Cancelled == true)
+            {
+                lblGitSummaryProgress.Text = "Canceled!";
+            }
+            else if (e.Error != null)
+            {
+                lblGitSummaryProgress.Text = "Error: " + e.Error.Message;
+            }
+            else
+            {
+                // Cleanup form after processing, to display results
+                lblGitSummaryProgress.Visible = false;
+                dgvGitSummary.Visible = true;
+                // After List<> has been built, now load DataGrid with results
+                dgvGitSummary.DataSource = gt.Repos;
             }
         }
         private void dgvGitSummary_CellContentClick(object sender, DataGridViewCellEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 namespace git_tools
@@ -6,6 +7,9 @@ namespace git_tools
     class GitTools
     {
         // Properties
+        public List<Repository> Repos;
+        public int CurrFolderCount;
+        public int RootFolderCount;
         private string _ErrorPathNotSelected = "Git location is not selected. Please browse to the Git install location (where git-cmd.exe is located).";
         private string _Path;
         public string Path { get => _Path; set => _Path = value; }
@@ -15,32 +19,46 @@ namespace git_tools
             _Path = "";
         }
         // Methods
-        public List<Repository> GetRepos(string root, bool localSummary, bool deepLookup)
+        public void GetRepos(ref BackgroundWorker worker, string root, bool localSummary, bool deepLookup)
         {
-            List<Repository> Repos = new List<Repository>();
             if (_Path != "")
             {
+                Repos = new List<Repository>();
+                CurrFolderCount = 0;
+                RootFolderCount = Directory.GetDirectories(root).Length;
                 // Process root folder first
-                ProcessFolder(root, root, localSummary, ref Repos);
+                ProcessFolder(root, root, localSummary);
                 // Process sub-folders, recursively
-                GitSummarySearch(root, root, localSummary, deepLookup, ref Repos);
+                GitSummarySearch(ref worker, root, root, localSummary, deepLookup);
             }
-            return Repos;
         }
-        private void GitSummarySearch(string root, string path, bool localSummary, bool deepLookup, ref List<Repository> Repos)
+        private void GitSummarySearch(ref BackgroundWorker worker, string root, string path, bool localSummary, bool deepLookup)
         {
-            // Run through selected path and load List<> with results for each sub-folder
-            foreach (string subDir in Directory.GetDirectories(path))
+            // ON entry check if we need to stop
+            if (worker.CancellationPending)
             {
-                // ProcessFolder will load the List<> and return True if it is a Repository
-                if (!ProcessFolder(root, subDir, localSummary, ref Repos) && deepLookup)
+                return;
+            }
+            else
+            {
+                // Run through selected path and load List<> with results for each sub-folder
+                foreach (string subDir in Directory.GetDirectories(path))
                 {
-                    // Go recursively if the parent folder was NOT a Repository and deepLookup = true
-                    GitSummarySearch(root, subDir, localSummary, deepLookup, ref Repos);
+                    if (root == path)
+                    {
+                        CurrFolderCount += 1;
+                        worker.ReportProgress((CurrFolderCount * 100) / RootFolderCount);
+                    }
+                    // ProcessFolder will load the List<> and return True if it is a Repository
+                    if (!ProcessFolder(root, subDir, localSummary) && deepLookup)
+                    {
+                        // Go recursively if the parent folder was NOT a Repository and deepLookup = true
+                        GitSummarySearch(ref worker, root, subDir, localSummary, deepLookup);
+                    }
                 }
             }
         }
-        private bool ProcessFolder(string root, string path, bool localSummary, ref List<Repository> Repos)
+        public bool ProcessFolder(string root, string path, bool localSummary)
         {
             bool boolReturn = false;
 
