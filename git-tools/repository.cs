@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-namespace git_tools
+﻿namespace git_tools
 {
     class Repository
     {
@@ -21,6 +17,5 @@ namespace git_tools
             _Status = status;
         }
         // Methods
-
     }
 }

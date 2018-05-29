@@ -18,23 +18,27 @@ namespace git_tools
         // Load Page | Browse for Git Location
         private void GitTools_Load(object sender, EventArgs e)
         {
+            // Set One-Time form values that can't be set through designer and never change
             toolTips.SetToolTip(chkLocalSummary, "Checks only local changes (no Fetch first), which is faster.");
             toolTips.SetToolTip(chkDeepLookup, "Will look for Git repos recursivly within the directory tree (does not search sub folders under a Git repo). Can be slow for large trees.");
+            dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            // Determine if Git is installed in default location
             LoadGitTools("C:\\Program Files\\Git");
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
+            // Display the Open File Dialog
             ofdGit.InitialDirectory = gt.Path;
-            // Show the dialog.
             DialogResult result = ofdGit.ShowDialog();
-            // Confirm result
             if (result == DialogResult.OK)
             {
+                // Determine if Git is installed in User selected location
                 LoadGitTools(Path.GetDirectoryName(ofdGit.FileName));
             }
         }
         private void LoadGitTools(string pathGit)
         {
+            // Cleanup form (to defaults) before processing
             lblStatus.Text = "Validating Git is installed/configured...";
             lblStatus.ForeColor = System.Drawing.Color.Black;
             lnkGitInstall.Visible = false;
@@ -48,9 +52,9 @@ namespace git_tools
                 tabNav.TabPages.Remove(tabGitBranchStatus);
             }
             // Validate Git is installed
-            if (!gt.GitInstalled(pathGit))
+            if (!gt.IsGitInstalled(pathGit))
             {
-                // Prompt User for location
+                // Prompt User for alternate Git installation location
                 lblStatus.Text = "Git is not installed/configured, or installed in a non-standard location. Please browse to the Git install location (where git-cmd.exe is located).";
                 lblStatus.ForeColor = System.Drawing.Color.Red;
                 lnkGitInstall.Visible = true;
@@ -62,6 +66,7 @@ namespace git_tools
                 lblGitVersion.Text = stdOutput;
                 if (stdError != "")
                 {
+                    // Unable to determine Git version. Something may be wrong with the installation
                     lblStatus.Text = "Git is installed, but appears to not be configured properly (unable to determine Git version). Please check your Git installation / configuration.";
                     lblStatus.ForeColor = System.Drawing.Color.Red;
                     lnkGitInstall.Visible = true;
@@ -78,6 +83,7 @@ namespace git_tools
         // Clickable Links
         private void lnkGitLocation_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            // Open Windows Explorer to the Git Install Location
             if (!Directory.Exists(gt.Path))
             {
                 lnkGitLocation.Text = "";
@@ -90,10 +96,12 @@ namespace git_tools
         }
         private void lnkGitTools_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            // Open Default Browser to the GitHub Project
             System.Diagnostics.Process.Start("https://github.com/rodibidably/git-tools");
         }
         private void lnkGitSummaryRoot_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            // Open Windows Explorer to the selected Git Repository root
             if (!Directory.Exists(lnkGitSummaryRoot.Text))
             {
                 lnkGitSummaryRoot.Text = "";
@@ -107,17 +115,21 @@ namespace git_tools
         // git-summary
         private void btnGitSummary_Click(object sender, EventArgs e)
         {
+            // Set Default Path to the last path used
             if (ConfigurationManager.AppSettings["LastPath"] != "")
             {
                 fbdPath.SelectedPath = ConfigurationManager.AppSettings["LastPath"];
             }
+            // Display the Open Folder Dialog
             if (fbdPath.ShowDialog() == DialogResult.OK)
             {
+                // Write last path used to app.config
                 Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 configuration.AppSettings.Settings["LastPath"].Value = fbdPath.SelectedPath;
                 configuration.Save(ConfigurationSaveMode.Full, true);
                 ConfigurationManager.RefreshSection("appSettings");
 //                ConfigurationManager.AppSettings["LastPath"] = fbdPath.SelectedPath;
+                // Cleanup form (to selected values) before processing
                 lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
                 lblGitSummaryOptions.Text = chkLocalSummary.Text + "=" + chkLocalSummary.Checked;
                 lblGitSummaryOptions.Text += " | " + chkDeepLookup.Text + "=" + chkDeepLookup.Checked;
@@ -126,7 +138,7 @@ namespace git_tools
                     tabNav.TabPages.Add(tabGitSummary);
                     tabNav.SelectedTab = tabGitSummary;
                 }
-                dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                // Recursively run through selected path and load DataGrid with results
                 dgvGitSummary.DataSource = gt.GetRepos(lnkGitSummaryRoot.Text, chkLocalSummary.Checked, chkDeepLookup.Checked);
             }
         }
@@ -134,6 +146,7 @@ namespace git_tools
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == 0)
             {
+                // Open Windows Explorer to the selected Git Repository
                 Process.Start(lnkGitSummaryRoot.Text + dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
             }
         }

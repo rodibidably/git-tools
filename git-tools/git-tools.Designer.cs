@@ -58,7 +58,6 @@
             this.lnkGitInstall = new System.Windows.Forms.LinkLabel();
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.fbdPath = new System.Windows.Forms.FolderBrowserDialog();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -405,7 +404,6 @@
         private System.Windows.Forms.FolderBrowserDialog fbdPath;
         private System.Windows.Forms.LinkLabel lnkGitSummaryRoot;
         private System.Windows.Forms.Label lblGitSummaryOptions;
-        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Folder;
         private System.Windows.Forms.DataGridViewTextBoxColumn Branch;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;

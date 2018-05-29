@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 namespace git_tools
@@ -7,6 +6,7 @@ namespace git_tools
     class GitTools
     {
         // Properties
+        private string _ErrorPathNotSelected = "Git location is not selected. Please browse to the Git install location (where git-cmd.exe is located).";
         private string _Path;
         public string Path { get => _Path; set => _Path = value; }
         // Constructors
@@ -15,27 +15,110 @@ namespace git_tools
             _Path = "";
         }
         // Methods
-        public bool GitInstalled(string pathGit)
+        public List<Repository> GetRepos(string root, bool localSummary, bool deepLookup)
+        {
+            List<Repository> Repos = new List<Repository>();
+            if (_Path != "")
+            {
+                // Process root folder first
+                ProcessFolder(root, root, localSummary, ref Repos);
+                // Process sub-folders, recursively
+                GitSummarySearch(root, root, localSummary, deepLookup, ref Repos);
+            }
+            return Repos;
+        }
+        private void GitSummarySearch(string root, string path, bool localSummary, bool deepLookup, ref List<Repository> Repos)
+        {
+            // Run through selected path and load List<> with results for each sub-folder
+            foreach (string subDir in Directory.GetDirectories(path))
+            {
+                // ProcessFolder will load the List<> and return True if it is a Repository
+                if (!ProcessFolder(root, subDir, localSummary, ref Repos) && deepLookup)
+                {
+                    // Go recursively if the parent folder was NOT a Repository and deepLookup = true
+                    GitSummarySearch(root, subDir, localSummary, deepLookup, ref Repos);
+                }
+            }
+        }
+        private bool ProcessFolder(string root, string path, bool localSummary, ref List<Repository> Repos)
         {
             bool boolReturn = false;
-            _Path = "";
 
-            if (Directory.Exists(pathGit))
+            // Setup initial variables, to capture results of instances of RunCommand
+            string stdOutput = "";
+            string stdError = "";
+            // Get initial Status (determine if Folder is a Repository)
+            RunCommand("status", path, ref stdOutput, ref stdError);
+            if (stdError == "")
             {
-                if (File.Exists(pathGit + "\\git-cmd.exe"))
+                // If localSummary = false, then run Fetch (which slows down processing) to determine any changes on server
+                // This may Prompt User for Git credentials
+                if (!localSummary)
                 {
-                    _Path = pathGit;
-                    boolReturn = true;
+                    RunCommand("fetch -q", path, ref stdOutput, ref stdError);
+                    if (stdOutput != "" || stdError != "")
+                    {
+                        // There appears to never be any output ???
+                        stdError = stdOutput;
+                    }
+                    // After fetch, run status again to get updated stdOutput
+                    RunCommand("status", path, ref stdOutput, ref stdError);
                 }
+                // Parse values to write to List<>
+                string folder = path.Substring(root.Length);    // local branch_name=`git -C $f "`
+                string status = ParseOutput_Status(stdOutput);
+                RunCommand("symbolic-ref HEAD", path, ref stdOutput, ref stdError);
+                string branch = ParseOutput_Branch(stdOutput);
+                // Split status into individual values for Counts
+                if (status != "nothing to commit, working tree clean\n")
+                {
+//                    RunGitCommand("rev-parse --abbrev-ref", path, ref stdOutput, ref stdError);
+//                    stdError = stdOutput;
+//                    RunGitCommand("log --pretty=format:'%h' ..@{u}", path, ref stdOutput, ref stdError);
+//                    stdError = stdOutput;
+//                    RunGitCommand("log --pretty=format:'%h' @{u}..", path, ref stdOutput, ref stdError);
+//                    stdError = stdOutput;
+                }
+                // Add Repository to List<>
+                Repos.Add(new Repository(folder, branch, status));
+                boolReturn = true;
             }
 
             return boolReturn;
         }
+        private string ParseOutput_Status(string stdOutput)
+        {
+            // Parse string to return Status in readable format
+            string status = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
+            if (status.IndexOf("Your branch is up to date with 'origin/master'.\n\n") == 0)
+            {
+                status = status.Substring(status.IndexOf("\n") + 2);
+            }
+            if (status.Substring(status.Length - 1) == "\n")
+            {
+                status = status.Substring(0, status.Length - 1);
+            }
+
+            return status;
+        }
+        private string ParseOutput_Branch(string stdOutput)
+        {
+            // Parse string to return only the Branch, cleanly
+            string branch = stdOutput.Substring("refs/heads/".Length);
+            branch = branch.Substring(0, branch.Length - 1);
+
+            return branch;
+        }
         public bool RunCommand(string command, string workingDirectory, ref string stdOutput, ref string stdError)
         {
+            // Wrapper to run any command against Git, for a selected folder
             bool boolReturn = false;
 
-            if (_Path != "")
+            if (_Path == "")
+            {
+                stdError = _ErrorPathNotSelected;
+            }
+            else
             {
                 ProcessStartInfo gitInfo = new ProcessStartInfo();
                 gitInfo.CreateNoWindow = true;
@@ -60,69 +143,19 @@ namespace git_tools
 
             return boolReturn;
         }
-        public List<Repository> GetRepos(string root, bool localSummary, bool deepLookup)
+        public bool IsGitInstalled(string pathGit)
         {
-            //            blC.Trace(" ");
-            List<Repository> Repos = new List<Repository>();
-            ProcessFolder(root, root, localSummary, ref Repos);
-            GitSummarySearch(root, root, localSummary, deepLookup, ref Repos);
-
-            return Repos;
-        }
-        private void GitSummarySearch(string root, string path, bool localSummary, bool deepLookup, ref List<Repository> Repos)
-        {
-            foreach (string subDir in Directory.GetDirectories(path))
-            {
-                if (!ProcessFolder(root, subDir, localSummary, ref Repos) && deepLookup)
-                {
-                    GitSummarySearch(root, subDir, localSummary, deepLookup, ref Repos);
-                }
-            }
-        }
-        private bool ProcessFolder(string root, string path, bool localSummary, ref List<Repository> Repos)
-        {
+            // Check selected path for existence of git install files
             bool boolReturn = false;
+            _Path = "";
 
-            string stdOutput = "";
-            string stdError = "";
-            RunCommand("status", path, ref stdOutput, ref stdError);
-            if (stdError == "")
+            if (Directory.Exists(pathGit))
             {
-                if (!localSummary)
+                if (File.Exists(pathGit + "\\git-cmd.exe"))
                 {
-                    RunCommand("fetch -q", path, ref stdOutput, ref stdError);
-                    if (stdOutput != "" || stdError != "")
-                    {
-                        stdOutput = stdOutput;
-                    }
-                    RunCommand("status", path, ref stdOutput, ref stdError);
+                    _Path = pathGit;
+                    boolReturn = true;
                 }
-                // Parse stdOutput
-                string folder = path.Substring(root.Length);
-                // local branch_name=`git -C $f "`
-                string status = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
-                if (status.IndexOf("Your branch is up to date with 'origin/master'.\n\n") == 0)
-                {
-                    status = status.Substring(status.IndexOf("\n") + 2);
-                }
-                if (status.Substring(status.Length - 1) == "\n")
-                {
-                    status = status.Substring(0, status.Length - 1);
-                }
-                RunCommand("symbolic-ref HEAD", path, ref stdOutput, ref stdError);
-                string branch = stdOutput.Substring("refs/heads/".Length);
-                branch = branch.Substring(0, branch.Length - 1);
-//                if (state != "nothing to commit, working tree clean\n")
-//                {
-//                    //RunGitCommand("rev-parse --abbrev-ref", subDir);
-//                    //stdOutput = stdOutput;
-//                    //RunGitCommand("log --pretty=format:'%h' ..@{u}", subDir);
-//                    //stdOutput = stdOutput;
-//                    //RunGitCommand("log --pretty=format:'%h' @{u}..", subDir);
-//                    //stdOutput = stdOutput;
-//                }
-                Repos.Add(new Repository(folder, branch, status));
-                boolReturn = true;
             }
 
             return boolReturn;
