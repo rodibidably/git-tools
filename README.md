@@ -17,7 +17,6 @@
 - **Deep Lookup** (default = off) - Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo). Can be slow for large directory trees
 
 #### ToDo:
-- Make git-summary run as a background process and give a progress bar / status
 - Cleanup Status, to be easier to read
   - Split Status into individual values for Counts?
 
