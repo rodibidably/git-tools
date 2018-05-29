@@ -24,7 +24,7 @@
 #### Credits
 A big thanks to the folks that wrote the (Linux) version of `git-summary` that this borrowed from:
 - [MirkoLedda](https://github.com/MirkoLedda/git-summary) 
-  - This is the project I used as a reference, but it is a branch of a series of repositories, worked on by many people
+  - This is the project (a fork of a series of repositories, worked on by many people) used as a reference
 
 ## Branch status
 **Coming next in development**
