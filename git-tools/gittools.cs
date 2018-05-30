@@ -83,22 +83,59 @@ namespace git_tools
                     RunCommand("status", path, ref stdOutput, ref stdError);
                 }
                 // Parse values to write to List<>
-                string folder = path.Substring(root.Length);    // local branch_name=`git -C $f "`
+                string folder = path.Substring(root.Length);
                 string status = ParseOutput_Status(stdOutput);
                 RunCommand("symbolic-ref HEAD", path, ref stdOutput, ref stdError);
                 string branch = ParseOutput_Branch(stdOutput);
                 // Split status into individual values for Counts
+                bool untracked = false;
+                bool newFiles = false;
+                bool modified = false;
+                bool deleted = false;
+                bool unpulled = false;
+                bool unpushed = false;
                 if (status != "nothing to commit, working tree clean\n")
                 {
-//                    RunGitCommand("rev-parse --abbrev-ref", path, ref stdOutput, ref stdError);
-//                    stdError = stdOutput;
-//                    RunGitCommand("log --pretty=format:'%h' ..@{u}", path, ref stdOutput, ref stdError);
-//                    stdError = stdOutput;
-//                    RunGitCommand("log --pretty=format:'%h' @{u}..", path, ref stdOutput, ref stdError);
-//                    stdError = stdOutput;
+//                    local untracked =`LC_ALL = C git - C $f status | grep Untracked - c`
+//                    local new_files =`LC_ALL = C git - C $f status | grep "new file" - c`
+//                    local modified =`LC_ALL = C git - C $f status | grep modified - c`
+                    if (status.IndexOf("Untracked") >=0)
+                    {
+                        untracked = true;
+                    }
+                    if (status.IndexOf("new file") >= 0)
+                    {
+                        // There appears to never be any output ???
+                        newFiles = true;
+                    }
+                    if (status.IndexOf("modified") >= 0)
+                    {
+                        modified = true;
+                    }
+                    if (status.IndexOf("deleted") >= 0)
+                    {
+                        deleted = true;
+                    }
+                    // local has_upstream=`git -C $f rev-parse --abbrev-ref @{u} 2> /dev/null | wc -l`
+                    RunCommand("rev-parse --abbrev-ref", path, ref stdOutput, ref stdError);
+                    if (stdOutput != "" || stdError != "")
+                    {
+                        // There appears to never be any output ???
+                        stdError = stdOutput;
+                    }
+                    RunCommand("log --pretty=format:'%h' ..@{u}", path, ref stdOutput, ref stdError);
+                    if (stdOutput != "" || stdError != "")
+                    {
+                        unpulled = true;
+                    }
+                    RunCommand("log --pretty=format:'%h' @{u}..", path, ref stdOutput, ref stdError);
+                    if (stdOutput != "" || stdError != "")
+                    {
+                        unpushed = true;
+                    }
                 }
                 // Add Repository to List<>
-                Repos.Add(new Repository(folder, branch, status));
+                Repos.Add(new Repository(folder, branch, status, untracked, newFiles, modified, deleted, unpulled, unpushed));
                 boolReturn = true;
             }
 

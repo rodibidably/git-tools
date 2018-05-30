@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
@@ -23,6 +22,7 @@ namespace git_tools
             toolTips.SetToolTip(chkLocalSummary, "Checks only local changes (no Fetch first), which is faster.");
             toolTips.SetToolTip(chkDeepLookup, "Will look for Git repos recursivly within the directory tree (does not search sub folders under a Git repo). Can be slow for large trees.");
             dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dgvGitSummary.AutoGenerateColumns = false;
             // Determine if Git is installed in default location
             LoadGitTools("C:\\Program Files\\Git");
         }
