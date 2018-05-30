@@ -41,6 +41,10 @@
             this.lnkGitTools = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.tabGitSummary = new System.Windows.Forms.TabPage();
+            this.chkRunStashed = new System.Windows.Forms.CheckBox();
+            this.chkRunUnmerged = new System.Windows.Forms.CheckBox();
+            this.chkRunUnpushed = new System.Windows.Forms.CheckBox();
+            this.chkRunUnpulled = new System.Windows.Forms.CheckBox();
             this.chkShowAll = new System.Windows.Forms.CheckBox();
             this.chkRecursive = new System.Windows.Forms.CheckBox();
             this.chkRunFetch = new System.Windows.Forms.CheckBox();
@@ -73,10 +77,6 @@
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.fbdPath = new System.Windows.Forms.FolderBrowserDialog();
             this.bwGitSummary = new System.ComponentModel.BackgroundWorker();
-            this.chkRunUnpulled = new System.Windows.Forms.CheckBox();
-            this.chkRunUnpushed = new System.Windows.Forms.CheckBox();
-            this.chkRunUnmerged = new System.Windows.Forms.CheckBox();
-            this.chkRunStashed = new System.Windows.Forms.CheckBox();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -182,6 +182,50 @@
             this.tabGitSummary.Text = "git-summary";
             this.tabGitSummary.UseVisualStyleBackColor = true;
             // 
+            // chkRunStashed
+            // 
+            this.chkRunStashed.AutoSize = true;
+            this.chkRunStashed.Location = new System.Drawing.Point(301, 6);
+            this.chkRunStashed.Name = "chkRunStashed";
+            this.chkRunStashed.Size = new System.Drawing.Size(92, 17);
+            this.chkRunStashed.TabIndex = 31;
+            this.chkRunStashed.Text = "Run \'Stashed\'";
+            this.chkRunStashed.UseVisualStyleBackColor = true;
+            // 
+            // chkRunUnmerged
+            // 
+            this.chkRunUnmerged.AutoSize = true;
+            this.chkRunUnmerged.Location = new System.Drawing.Point(399, 6);
+            this.chkRunUnmerged.Name = "chkRunUnmerged";
+            this.chkRunUnmerged.Size = new System.Drawing.Size(102, 17);
+            this.chkRunUnmerged.TabIndex = 30;
+            this.chkRunUnmerged.Text = "Run \'Unmerged\'";
+            this.chkRunUnmerged.UseVisualStyleBackColor = true;
+            // 
+            // chkRunUnpushed
+            // 
+            this.chkRunUnpushed.AutoSize = true;
+            this.chkRunUnpushed.Checked = true;
+            this.chkRunUnpushed.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRunUnpushed.Location = new System.Drawing.Point(193, 6);
+            this.chkRunUnpushed.Name = "chkRunUnpushed";
+            this.chkRunUnpushed.Size = new System.Drawing.Size(102, 17);
+            this.chkRunUnpushed.TabIndex = 29;
+            this.chkRunUnpushed.Text = "Run \'Unpushed\'";
+            this.chkRunUnpushed.UseVisualStyleBackColor = true;
+            // 
+            // chkRunUnpulled
+            // 
+            this.chkRunUnpulled.AutoSize = true;
+            this.chkRunUnpulled.Checked = true;
+            this.chkRunUnpulled.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRunUnpulled.Location = new System.Drawing.Point(92, 6);
+            this.chkRunUnpulled.Name = "chkRunUnpulled";
+            this.chkRunUnpulled.Size = new System.Drawing.Size(95, 17);
+            this.chkRunUnpulled.TabIndex = 28;
+            this.chkRunUnpulled.Text = "Run \'Unpulled\'";
+            this.chkRunUnpulled.UseVisualStyleBackColor = true;
+            // 
             // chkShowAll
             // 
             this.chkShowAll.AutoSize = true;
@@ -197,6 +241,8 @@
             // chkRecursive
             // 
             this.chkRecursive.AutoSize = true;
+            this.chkRecursive.Checked = true;
+            this.chkRecursive.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkRecursive.Location = new System.Drawing.Point(507, 6);
             this.chkRecursive.Name = "chkRecursive";
             this.chkRecursive.Size = new System.Drawing.Size(74, 17);
@@ -506,46 +552,6 @@
             this.bwGitSummary.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwGitSummary_DoWork);
             this.bwGitSummary.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwGitSummary_ProgressChanged);
             this.bwGitSummary.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwGitSummary_RunWorkerCompleted);
-            // 
-            // chkRunUnpulled
-            // 
-            this.chkRunUnpulled.AutoSize = true;
-            this.chkRunUnpulled.Location = new System.Drawing.Point(92, 6);
-            this.chkRunUnpulled.Name = "chkRunUnpulled";
-            this.chkRunUnpulled.Size = new System.Drawing.Size(95, 17);
-            this.chkRunUnpulled.TabIndex = 28;
-            this.chkRunUnpulled.Text = "Run \'Unpulled\'";
-            this.chkRunUnpulled.UseVisualStyleBackColor = true;
-            // 
-            // chkRunUnpushed
-            // 
-            this.chkRunUnpushed.AutoSize = true;
-            this.chkRunUnpushed.Location = new System.Drawing.Point(193, 6);
-            this.chkRunUnpushed.Name = "chkRunUnpushed";
-            this.chkRunUnpushed.Size = new System.Drawing.Size(102, 17);
-            this.chkRunUnpushed.TabIndex = 29;
-            this.chkRunUnpushed.Text = "Run \'Unpushed\'";
-            this.chkRunUnpushed.UseVisualStyleBackColor = true;
-            // 
-            // chkRunUnmerged
-            // 
-            this.chkRunUnmerged.AutoSize = true;
-            this.chkRunUnmerged.Location = new System.Drawing.Point(399, 6);
-            this.chkRunUnmerged.Name = "chkRunUnmerged";
-            this.chkRunUnmerged.Size = new System.Drawing.Size(102, 17);
-            this.chkRunUnmerged.TabIndex = 30;
-            this.chkRunUnmerged.Text = "Run \'Unmerged\'";
-            this.chkRunUnmerged.UseVisualStyleBackColor = true;
-            // 
-            // chkRunStashed
-            // 
-            this.chkRunStashed.AutoSize = true;
-            this.chkRunStashed.Location = new System.Drawing.Point(301, 6);
-            this.chkRunStashed.Name = "chkRunStashed";
-            this.chkRunStashed.Size = new System.Drawing.Size(92, 17);
-            this.chkRunStashed.TabIndex = 31;
-            this.chkRunStashed.Text = "Run \'Stashed\'";
-            this.chkRunStashed.UseVisualStyleBackColor = true;
             // 
             // Git_Tools
             // 
