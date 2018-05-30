@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 namespace git_tools
 {
     class GitTools
@@ -19,7 +20,7 @@ namespace git_tools
             _Path = "";
         }
         // Methods
-        public void GetRepos(ref BackgroundWorker worker, string root, bool localSummary, bool deepLookup)
+        public void GetRepos(ref BackgroundWorker worker, string root, bool localSummary, bool deepLookup, bool showAll)
         {
             if (_Path != "")
             {
@@ -27,12 +28,12 @@ namespace git_tools
                 CurrFolderCount = 0;
                 RootFolderCount = Directory.GetDirectories(root).Length;
                 // Process root folder first
-                ProcessFolder(root, root, localSummary);
+                ProcessFolder(root, root, localSummary, showAll);
                 // Process sub-folders, recursively
-                GitSummarySearch(ref worker, root, root, localSummary, deepLookup);
+                GitSummarySearch(ref worker, root, root, localSummary, deepLookup, showAll);
             }
         }
-        private void GitSummarySearch(ref BackgroundWorker worker, string root, string path, bool localSummary, bool deepLookup)
+        private void GitSummarySearch(ref BackgroundWorker worker, string root, string path, bool localSummary, bool deepLookup, bool showAll)
         {
             // ON entry check if we need to stop
             if (worker.CancellationPending)
@@ -50,15 +51,15 @@ namespace git_tools
                         worker.ReportProgress((CurrFolderCount * 100) / RootFolderCount);
                     }
                     // ProcessFolder will load the List<> and return True if it is a Repository
-                    if (!ProcessFolder(root, subDir, localSummary) && deepLookup)
+                    if (!ProcessFolder(root, subDir, localSummary, showAll) && deepLookup)
                     {
                         // Go recursively if the parent folder was NOT a Repository and deepLookup = true
-                        GitSummarySearch(ref worker, root, subDir, localSummary, deepLookup);
+                        GitSummarySearch(ref worker, root, subDir, localSummary, deepLookup, showAll);
                     }
                 }
             }
         }
-        public bool ProcessFolder(string root, string path, bool localSummary)
+        public bool ProcessFolder(string root, string path, bool localSummary, bool showAll)
         {
             bool boolReturn = false;
 
@@ -93,11 +94,11 @@ namespace git_tools
                 // Split status into individual values for Counts
                 bool untracked = false;
                 bool newFiles = false;
-                bool modified = false;
-                bool deleted = false;
+                int? modified = null;
+                int? deleted = null;
                 bool unpulled = false;
                 bool unpushed = false;
-                if (status != "nothing to commit, working tree clean\n")
+                if (status != "nothing to commit, working tree clean")
                 {
 //                    local untracked =`LC_ALL = C git - C $f status | grep Untracked - c`
 //                    local new_files =`LC_ALL = C git - C $f status | grep "new file" - c`
@@ -113,11 +114,11 @@ namespace git_tools
                     }
                     if (status.IndexOf("modified") >= 0)
                     {
-                        modified = true;
+                        modified = status.Select((c, i) => status.Substring(i)).Count(sub => sub.StartsWith("modified"));
                     }
                     if (status.IndexOf("deleted") >= 0)
                     {
-                        deleted = true;
+                        deleted = status.Select((c, i) => status.Substring(i)).Count(sub => sub.StartsWith("deleted"));
                     }
                     // local has_upstream=`git -C $f rev-parse --abbrev-ref @{u} 2> /dev/null | wc -l`
                     RunCommand("rev-parse --abbrev-ref", path, ref stdOutput, ref stdError);
@@ -138,7 +139,10 @@ namespace git_tools
                     }
                 }
                 // Add Repository to List<>
-                Repos.Add(new Repository(folder, branch, status, remote, untracked, newFiles, modified, deleted, unpulled, unpushed));
+                if (showAll || status != "nothing to commit, working tree clean")
+                {
+                    Repos.Add(new Repository(folder, branch, status, remote, untracked, newFiles, modified, deleted, unpulled, unpushed));
+                }
                 boolReturn = true;
             }
 
@@ -178,17 +182,21 @@ namespace git_tools
             }
             else
             {
-                ProcessStartInfo gitInfo = new ProcessStartInfo();
-                gitInfo.CreateNoWindow = true;
-                gitInfo.RedirectStandardError = true;
-                gitInfo.RedirectStandardOutput = true;
-                gitInfo.FileName = _Path + @"\bin\git.exe";
-                gitInfo.UseShellExecute = false;
-                Process gitProcess = new Process();
-                // Send Git the command (such as "fetch orign")
-                gitInfo.Arguments = command;
-                gitInfo.WorkingDirectory = workingDirectory;
-                gitProcess.StartInfo = gitInfo;
+                ProcessStartInfo gitInfo = new ProcessStartInfo()
+                {
+                    CreateNoWindow = true,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    FileName = _Path + @"\bin\git.exe",
+                    UseShellExecute = false,
+                    // Send Git the command (such as "fetch orign")
+                    Arguments = command,
+                    WorkingDirectory = workingDirectory
+                };
+                Process gitProcess = new Process()
+                {
+                    StartInfo = gitInfo
+                };
                 gitProcess.Start();
                 // pick up STDERR
                 stdError = gitProcess.StandardError.ReadToEnd();

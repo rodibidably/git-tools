@@ -21,6 +21,7 @@ namespace git_tools
             // Set One-Time form values that can't be set through designer and never change
             toolTips.SetToolTip(chkLocalSummary, "Checks only local changes (no Fetch first), which is faster.");
             toolTips.SetToolTip(chkDeepLookup, "Will look for Git repos recursivly within the directory tree (does not search sub folders under a Git repo). Can be slow for large trees.");
+            toolTips.SetToolTip(chkShowAll, "Show all Repos, even those without changes.");
             dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgvGitSummary.AutoGenerateColumns = false;
             // Determine if Git is installed in default location
@@ -137,6 +138,7 @@ namespace git_tools
                     lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
                     lblGitSummaryOptions.Text = chkLocalSummary.Text + "=" + chkLocalSummary.Checked;
                     lblGitSummaryOptions.Text += " | " + chkDeepLookup.Text + "=" + chkDeepLookup.Checked;
+                    lblGitSummaryOptions.Text += " | " + chkShowAll.Text + "=" + chkShowAll.Checked;
                     if (!tabNav.TabPages.Contains(tabGitSummary))
                     {
                         tabNav.TabPages.Add(tabGitSummary);
@@ -155,7 +157,7 @@ namespace git_tools
             // This event handler is where the time-consuming work is done
             BackgroundWorker worker = sender as BackgroundWorker;
             // Recursively run through selected path to build List<>
-            gt.GetRepos(ref worker, lnkGitSummaryRoot.Text, chkLocalSummary.Checked, chkDeepLookup.Checked);
+            gt.GetRepos(ref worker, lnkGitSummaryRoot.Text, chkLocalSummary.Checked, chkDeepLookup.Checked, chkShowAll.Checked);
         }
         private void bwGitSummary_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {

@@ -13,24 +13,18 @@
         public string Remote { get => _Remote; set => _Remote = value; }
         private bool _Untracked;
         private bool _NewFiles;
-        private bool _Modified;
-        private bool _Deleted;
+        private int? _Modified;
+        private int? _Deleted;
         private bool _Unpulled;
         private bool _Unpushed;
         public bool Untracked { get => _Untracked; set => _Untracked = value; }
         public bool NewFiles { get => _NewFiles; set => _NewFiles = value; }
-        public bool Modified { get => _Modified; set => _Modified = value; }
-        public bool Deleted { get => _Deleted; set => _Deleted = value; }
+        public int? Modified { get => _Modified; set => _Modified = value; }
+        public int? Deleted { get => _Deleted; set => _Deleted = value; }
         public bool Unpulled { get => _Unpulled; set => _Unpulled = value; }
         public bool Unpushed { get => _Unpushed; set => _Unpushed = value; }
         // Constructors
-        public Repository(string folder, string branch, string status)
-        {
-            _Folder = folder;
-            _Branch = branch;
-            _Status = status;
-        }
-        public Repository(string folder, string branch, string status, string remote, bool untracked, bool newFiles, bool modified, bool deleted, bool unpulled, bool unpushed)
+        public Repository(string folder, string branch, string status, string remote, bool untracked, bool newFiles, int? modified, int? deleted, bool unpulled, bool unpushed)
         {
             _Folder = folder;
             _Branch = branch;
