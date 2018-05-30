@@ -12,13 +12,17 @@
 - Did I commit that quick change I made before the delivery guy rang my door...?
 
 #### Options
-- **Folder Selection** - The folder to run git-summary against
-- **Local Summary** (default = on) - Checks only local changes (does not first run `git fetch`), which runs faster
-- **Deep Lookup** (default = off) - Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo). Can be slow for large directory trees
-- **Show All** (default = on) - Show all Repos, even those without changes
+- **Folder Selection** - The folder to run git-summary against; Selected on Button_Click
+- **Run `Fetch`** (default = off) - Checks local and remote changes (i.e. first run `git fetch`); Runs slower
+- **Run `Unpulled`** (default = off) - Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' ..@{u}`); Runs slower
+- **Run `Unpushed`** (default = off) - Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' @{u}..`); Runs slower
+- **Run `Stashed`** (default = off) - Checks local and remote changes (i.e. first run `git stash list`); Runs slower
+- **Run `Unmerged`** (default = off) - Checks local and remote changes (i.e. first run `git branch --no-merged master`); Runs slower
+- **Recursive** (default = off) - Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo); Can be slow for large directory trees
+- **Show All Repos** (default = on) - Show all Repositories in List, even those without changes
 
 #### ToDo
-- Make Unpushed, Unpulled, Stashed Changes, Unmerged Branches optional (and hide from GUI when not selected)
+- 
 
 ## git-branch-status
 **Coming next in development**

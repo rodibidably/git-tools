@@ -19,10 +19,11 @@ namespace git_tools
         private void GitTools_Load(object sender, EventArgs e)
         {
             // Set One-Time form values that can't be set through designer and never change
-            toolTips.SetToolTip(chkLocalSummary, "Checks only local changes (no Fetch first), which is faster.");
-            toolTips.SetToolTip(chkDeepLookup, "Will look for Git repos recursivly within the directory tree (does not search sub folders under a Git repo). Can be slow for large trees.");
+            toolTips.SetToolTip(chkRunFetch, "Checks only local changes (no Fetch first), which is faster.");
+            toolTips.SetToolTip(chkRecursive, "Will look for Git repos recursivly within the directory tree (does not search sub folders under a Git repo). Can be slow for large trees.");
             toolTips.SetToolTip(chkShowAll, "Show all Repos, even those without changes.");
             lblGitSummaryProgress.Text = "";
+            lnkGitSummaryRoot.Text = "";
             dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgvGitSummary.AutoGenerateColumns = false;
             // Determine if Git is installed in default location
@@ -139,8 +140,12 @@ namespace git_tools
                     lblGitSummaryProgress.Visible = true;
                     lblGitSummaryProgress.Text = ("Processing: 0%");
                     dgvGitSummary.Visible = false;
-                    chkLocalSummary.Enabled = false;
-                    chkDeepLookup.Enabled = false;
+                    chkRunFetch.Enabled = false;
+                    chkRunUnpulled.Enabled = false;
+                    chkRunUnpushed.Enabled = false;
+                    chkRunStashed.Enabled = false;
+                    chkRunUnmerged.Enabled = false;
+                    chkRecursive.Enabled = false;
                     chkShowAll.Enabled = false;
                     btnGitSummary.Enabled = false;
                     // Start the asynchronous operation (essentially: bwGitSummary_DoWork)
@@ -153,7 +158,7 @@ namespace git_tools
             // This event handler is where the time-consuming work is done
             BackgroundWorker worker = sender as BackgroundWorker;
             // Recursively run through selected path to build List<>
-            gt.GetRepos(ref worker, lnkGitSummaryRoot.Text, chkLocalSummary.Checked, chkDeepLookup.Checked, chkShowAll.Checked);
+            gt.GetRepos(ref worker, lnkGitSummaryRoot.Text, chkRunFetch.Checked, chkRunUnpulled.Checked, chkRunUnpushed.Checked, chkRunStashed.Checked, chkRunUnmerged.Checked, chkRecursive.Checked, chkShowAll.Checked);
         }
         private void bwGitSummary_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -181,14 +186,23 @@ namespace git_tools
                 // Highlight rows with changes
                 foreach (DataGridViewRow row in dgvGitSummary.Rows)
                 {
-                    if ((bool?)row.Cells[2].Value == true)
+                    if ((bool?)row.Cells["Diff"].Value == true)
                     {
                         row.DefaultCellStyle.BackColor = System.Drawing.Color.Beige;
                     }
                 }
+                // Hide columns that were not collected
+                dgvGitSummary.Columns["Unpulled"].Visible = chkRunUnpulled.Checked;
+                dgvGitSummary.Columns["Unpushed"].Visible = chkRunUnpushed.Checked;
+                dgvGitSummary.Columns["Stashed"].Visible = chkRunStashed.Checked;
+                dgvGitSummary.Columns["Unmerged"].Visible = chkRunUnmerged.Checked;
                 // Cleanup form after processing, to enable fields
-                chkLocalSummary.Enabled = true;
-                chkDeepLookup.Enabled = true;
+                chkRunFetch.Enabled = true;
+                chkRunUnpulled.Enabled = true;
+                chkRunUnpushed.Enabled = true;
+                chkRunStashed.Enabled = true;
+                chkRunUnmerged.Enabled = true;
+                chkRecursive.Enabled = true;
                 chkShowAll.Enabled = true;
                 btnGitSummary.Enabled = true;
                 tabNav.SelectedTab = tabGitSummary;

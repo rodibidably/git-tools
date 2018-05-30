@@ -20,7 +20,7 @@ namespace git_tools
             _Path = "";
         }
         // Methods
-        public void GetRepos(ref BackgroundWorker worker, string root, bool localSummary, bool deepLookup, bool showAll)
+        public void GetRepos(ref BackgroundWorker worker, string root, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool recursive, bool showAll)
         {
             if (_Path != "")
             {
@@ -28,12 +28,12 @@ namespace git_tools
                 CurrFolderCount = 0;
                 RootFolderCount = Directory.GetDirectories(root).Length;
                 // Process root folder first
-                ProcessFolder(root, root, localSummary, showAll);
+                ProcessFolder(root, root, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, showAll);
                 // Process sub-folders, recursively
-                GitSummarySearch(ref worker, root, root, localSummary, deepLookup, showAll);
+                GitSummarySearch(ref worker, root, root, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, recursive, showAll);
             }
         }
-        private void GitSummarySearch(ref BackgroundWorker worker, string root, string path, bool localSummary, bool deepLookup, bool showAll)
+        private void GitSummarySearch(ref BackgroundWorker worker, string root, string path, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool recursive, bool showAll)
         {
             // ON entry check if we need to stop
             if (worker.CancellationPending)
@@ -51,15 +51,15 @@ namespace git_tools
                         worker.ReportProgress((CurrFolderCount * 100) / RootFolderCount);
                     }
                     // ProcessFolder will load the List<> and return True if it is a Repository
-                    if (!ProcessFolder(root, subDir, localSummary, showAll) && deepLookup)
+                    if (!ProcessFolder(root, subDir, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, showAll) && recursive)
                     {
-                        // Go recursively if the parent folder was NOT a Repository and deepLookup = true
-                        GitSummarySearch(ref worker, root, subDir, localSummary, deepLookup, showAll);
+                        // Run recursively if the parent folder was NOT a Repository and recursive = true
+                        GitSummarySearch(ref worker, root, subDir, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, recursive, showAll);
                     }
                 }
             }
         }
-        public bool ProcessFolder(string root, string path, bool localSummary, bool showAll)
+        public bool ProcessFolder(string root, string path, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool showAll)
         {
             bool boolReturn = false;
 
@@ -68,12 +68,12 @@ namespace git_tools
             string stdError = "";
             // Get initial Status (determine if Folder is a Repository)
             RunCommand("status", path, ref stdOutput, ref stdError);
-            if (stdError == "")
+            if (stdError == "" && stdOutput != "")
             {
-                // If localSummary = false, then run Fetch (which slows down processing) to determine any changes on server
-                // This may Prompt User for Git credentials
-                if (!localSummary)
+                // If runFetch = true, then run Fetch (which slows down processing) to determine any changes on server
+                if (runFetch)
                 {
+                    // This may Prompt User for Git credentials
                     RunCommand("fetch -q", path, ref stdOutput, ref stdError);
                     if (stdOutput != "" || stdError != "")
                     {
@@ -88,9 +88,6 @@ namespace git_tools
                 string status = ParseOutput_Status(stdOutput);
                 RunCommand("symbolic-ref HEAD", path, ref stdOutput, ref stdError);
                 string branch = ParseOutput_Branch(stdOutput);
-                //git - C $1 remote get-url
-                RunCommand("remote get-url origin", path, ref stdOutput, ref stdError);
-                string remote = stdOutput;
                 // Split status into individual values for Counts
                 bool untracked = false;
                 bool newFiles = false;
@@ -100,56 +97,62 @@ namespace git_tools
                 bool unpushed = false;
                 bool stashed = false;
                 bool unmerged = false;
-
-                    if (status.IndexOf("Untracked") >=0)
-                    {
-                        untracked = true;
-                    }
-                    if (status.IndexOf("new file") >= 0)
-                    {
-                        // There appears to never be any data ???
-                        newFiles = true;
-                    }
-                    if (status.IndexOf("modified") >= 0)
-                    {
-                        modified = status.Select((c, i) => status.Substring(i)).Count(sub => sub.StartsWith("modified"));
-                    }
-                    if (status.IndexOf("deleted") >= 0)
-                    {
-                        deleted = status.Select((c, i) => status.Substring(i)).Count(sub => sub.StartsWith("deleted"));
-                    }
-//                    // local has_upstream=`git -C $f rev-parse --abbrev-ref @{u} 2> /dev/null | wc -l`
-//                    RunCommand("rev-parse --abbrev-ref", path, ref stdOutput, ref stdError);
-//                    if (stdOutput != "" || stdError != "")
-//                    {
-//                        // There appears to never be any output ???
-//                        stdError = stdOutput;
-//                    }
+                if (status.IndexOf("Untracked") >= 0)
+                {
+                    untracked = true;
+                }
+                if (status.IndexOf("new file") >= 0)
+                {
+                    // There appears to never be any data ???
+                    newFiles = true;
+                }
+                if (status.IndexOf("modified") >= 0)
+                {
+                    modified = status.Select((c, i) => status.Substring(i)).Count(sub => sub.StartsWith("modified"));
+                }
+                if (status.IndexOf("deleted") >= 0)
+                {
+                    deleted = status.Select((c, i) => status.Substring(i)).Count(sub => sub.StartsWith("deleted"));
+                }
+                if (runUnpulled)
+                {
                     RunCommand("log --pretty=format:'%h' ..@{u}", path, ref stdOutput, ref stdError);
                     if (stdOutput != "" || stdError != "")
                     {
                         unpulled = true;
                     }
+                }
+                if (runUnpushed)
+                {
                     RunCommand("log --pretty=format:'%h' @{u}..", path, ref stdOutput, ref stdError);
                     if (stdOutput != "" || stdError != "")
                     {
                         unpushed = true;
                     }
-                RunCommand("stash list", path, ref stdOutput, ref stdError);
-                if (stdOutput != "" || stdError != "")
-                {
-                    stashed = true;
                 }
-                RunCommand("branch --no-merged master", path, ref stdOutput, ref stdError);
-                if (stdOutput != "" || stdError != "")
+                if (runStashed)
                 {
-                    unmerged = true;
+                    RunCommand("stash list", path, ref stdOutput, ref stdError);
+                    if (stdOutput != "" || stdError != "")
+                    {
+                        stashed = true;
+                    }
                 }
+                if (runUnmerged)
+                {
+                    RunCommand("branch --no-merged master", path, ref stdOutput, ref stdError);
+                    if (stdOutput != "" || stdError != "")
+                    {
+                        unmerged = true;
+                    }
+                }
+                RunCommand("remote get-url origin", path, ref stdOutput, ref stdError);
+                string remote = stdOutput;
                 bool diff = (untracked || newFiles || modified != null || deleted != null || unpulled || unpushed || stashed || unmerged || status != "nothing to commit, working tree clean");
                 // Add Repository to List<>
                 if (showAll || diff)
                 {
-                    Repos.Add(new Repository(folder, branch, status, diff, remote, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged));
+                    Repos.Add(new Repository(folder, branch, status, diff, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged, remote));
                 }
                 boolReturn = true;
             }
