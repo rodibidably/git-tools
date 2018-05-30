@@ -17,14 +17,16 @@
         private int? _Deleted;
         private bool _Unpulled;
         private bool _Unpushed;
+        private bool _Stashed;
         public bool Untracked { get => _Untracked; set => _Untracked = value; }
         public bool NewFiles { get => _NewFiles; set => _NewFiles = value; }
         public int? Modified { get => _Modified; set => _Modified = value; }
         public int? Deleted { get => _Deleted; set => _Deleted = value; }
         public bool Unpulled { get => _Unpulled; set => _Unpulled = value; }
         public bool Unpushed { get => _Unpushed; set => _Unpushed = value; }
+        public bool Stashed { get => _Stashed; set => _Stashed = value; }
         // Constructors
-        public Repository(string folder, string branch, string status, string remote, bool untracked, bool newFiles, int? modified, int? deleted, bool unpulled, bool unpushed)
+        public Repository(string folder, string branch, string status, string remote, bool untracked, bool newFiles, int? modified, int? deleted, bool unpulled, bool unpushed, bool stashed)
         {
             _Folder = folder;
             _Branch = branch;
@@ -36,6 +38,7 @@
             _Deleted = deleted;
             _Unpulled = unpulled;
             _Unpushed = unpushed;
+            _Stashed = stashed;
         }
         // Methods
     }

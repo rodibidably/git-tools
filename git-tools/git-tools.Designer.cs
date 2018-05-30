@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabNav = new System.Windows.Forms.TabControl();
             this.tabGitTools = new System.Windows.Forms.TabPage();
+            this.chkShowAll = new System.Windows.Forms.CheckBox();
             this.chkDeepLookup = new System.Windows.Forms.CheckBox();
             this.chkLocalSummary = new System.Windows.Forms.CheckBox();
             this.btnGitBranchStatus = new System.Windows.Forms.Button();
@@ -69,9 +70,9 @@
             this.Deleted = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Unpulled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Unpushed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Stashed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Remote = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chkShowAll = new System.Windows.Forms.CheckBox();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -107,6 +108,18 @@
             this.tabGitTools.TabIndex = 2;
             this.tabGitTools.Text = "git-tools";
             this.tabGitTools.UseVisualStyleBackColor = true;
+            // 
+            // chkShowAll
+            // 
+            this.chkShowAll.AutoSize = true;
+            this.chkShowAll.Checked = true;
+            this.chkShowAll.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowAll.Location = new System.Drawing.Point(210, 71);
+            this.chkShowAll.Name = "chkShowAll";
+            this.chkShowAll.Size = new System.Drawing.Size(67, 17);
+            this.chkShowAll.TabIndex = 23;
+            this.chkShowAll.Text = "Show All";
+            this.chkShowAll.UseVisualStyleBackColor = true;
             // 
             // chkDeepLookup
             // 
@@ -254,6 +267,7 @@
             this.Deleted,
             this.Unpulled,
             this.Unpushed,
+            this.Stashed,
             this.Status,
             this.Remote});
             this.dgvGitSummary.Location = new System.Drawing.Point(6, 32);
@@ -365,9 +379,9 @@
             // Folder
             // 
             this.Folder.DataPropertyName = "Folder";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Blue;
-            this.Folder.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Blue;
+            this.Folder.DefaultCellStyle = dataGridViewCellStyle1;
             this.Folder.HeaderText = "Folder";
             this.Folder.Name = "Folder";
             this.Folder.ReadOnly = true;
@@ -405,9 +419,9 @@
             // Modified
             // 
             this.Modified.DataPropertyName = "Modified";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.NullValue = " ";
-            this.Modified.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.NullValue = " ";
+            this.Modified.DefaultCellStyle = dataGridViewCellStyle2;
             this.Modified.HeaderText = "Modified";
             this.Modified.Name = "Modified";
             this.Modified.ReadOnly = true;
@@ -417,9 +431,9 @@
             // Deleted
             // 
             this.Deleted.DataPropertyName = "Deleted";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.NullValue = " ";
-            this.Deleted.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.NullValue = " ";
+            this.Deleted.DefaultCellStyle = dataGridViewCellStyle3;
             this.Deleted.HeaderText = "Deleted";
             this.Deleted.Name = "Deleted";
             this.Deleted.ReadOnly = true;
@@ -447,6 +461,14 @@
             this.Unpushed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Unpushed.Width = 81;
             // 
+            // Stashed
+            // 
+            this.Stashed.DataPropertyName = "Stashed";
+            this.Stashed.HeaderText = "Stashed";
+            this.Stashed.Name = "Stashed";
+            this.Stashed.ReadOnly = true;
+            this.Stashed.Width = 52;
+            // 
             // Status
             // 
             this.Status.DataPropertyName = "Status";
@@ -458,25 +480,13 @@
             // Remote
             // 
             this.Remote.DataPropertyName = "Remote";
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Blue;
-            this.Remote.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Blue;
+            this.Remote.DefaultCellStyle = dataGridViewCellStyle4;
             this.Remote.HeaderText = "Remote";
             this.Remote.Name = "Remote";
             this.Remote.ReadOnly = true;
             this.Remote.Width = 69;
-            // 
-            // chkShowAll
-            // 
-            this.chkShowAll.AutoSize = true;
-            this.chkShowAll.Checked = true;
-            this.chkShowAll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowAll.Location = new System.Drawing.Point(210, 71);
-            this.chkShowAll.Name = "chkShowAll";
-            this.chkShowAll.Size = new System.Drawing.Size(67, 17);
-            this.chkShowAll.TabIndex = 23;
-            this.chkShowAll.Text = "Show All";
-            this.chkShowAll.UseVisualStyleBackColor = true;
             // 
             // Git_Tools
             // 
@@ -539,6 +549,7 @@
         private System.Windows.Forms.Label lblGitSummaryProgress;
         private System.Windows.Forms.DataGridView dgvGitSummary;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.CheckBox chkShowAll;
         private System.Windows.Forms.DataGridViewTextBoxColumn Folder;
         private System.Windows.Forms.DataGridViewTextBoxColumn Branch;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Untracked;
@@ -547,9 +558,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Deleted;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Unpulled;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Unpushed;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Stashed;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Remote;
-        private System.Windows.Forms.CheckBox chkShowAll;
     }
 }
 

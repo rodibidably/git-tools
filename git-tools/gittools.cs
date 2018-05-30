@@ -98,11 +98,9 @@ namespace git_tools
                 int? deleted = null;
                 bool unpulled = false;
                 bool unpushed = false;
+                bool stashed = false;
                 if (status != "nothing to commit, working tree clean")
                 {
-//                    local untracked =`LC_ALL = C git - C $f status | grep Untracked - c`
-//                    local new_files =`LC_ALL = C git - C $f status | grep "new file" - c`
-//                    local modified =`LC_ALL = C git - C $f status | grep modified - c`
                     if (status.IndexOf("Untracked") >=0)
                     {
                         untracked = true;
@@ -138,10 +136,15 @@ namespace git_tools
                         unpushed = true;
                     }
                 }
+                RunCommand("stash list", path, ref stdOutput, ref stdError);
+                if (stdOutput != "" || stdError != "")
+                {
+                    stashed = true;
+                }
                 // Add Repository to List<>
                 if (showAll || status != "nothing to commit, working tree clean")
                 {
-                    Repos.Add(new Repository(folder, branch, status, remote, untracked, newFiles, modified, deleted, unpulled, unpushed));
+                    Repos.Add(new Repository(folder, branch, status, remote, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed));
                 }
                 boolReturn = true;
             }
