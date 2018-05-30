@@ -17,6 +17,9 @@
 - **Deep Lookup** (default = off) - Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo). Can be slow for large directory trees
 - **Show All** (default = on) - Show all Repos, even those without changes
 
+#### ToDo
+- Make Unpushed, Unpulled, Stashed Changes, Unmerged Branches optional (and hide from GUI when not selected)
+
 ## git-branch-status
 **Coming next in development**
 - Currently, `git-summary` does not list multiple branches per repo. However, for single repos [`git-branch-status`](https://github.com/bill-auger/git-branch-status) does this beautifully.
