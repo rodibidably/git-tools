@@ -23,5 +23,5 @@
 ## Credits
 A big thanks to the folks that wrote the (Linux) versions that this project borrowed from:
 - [MirkoLedda](https://github.com/MirkoLedda/git-summary) - Primary reference for `git-summary`
-- [pzimmermann](https://github.com/pzimmermann/git-summary) - Additional functionality (Add remote origin url) for `git-summary`
+- [pzimmermann](https://github.com/pzimmermann/git-summary) - Add remote origin url for `git-summary`
 - [bill-auger](https://github.com/bill-auger/git-branch-status) - Primary reference for `git-branch-status`
