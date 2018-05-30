@@ -1,8 +1,8 @@
 # git-tools
-**`git-tools` is a .NET application that acts as a wrapper around many popular git functions to make development easier**
+**git-tools is a .NET application that acts as a wrapper around many popular git functions, designed to make using Git easier**
 
-## `git-summary`
-**Will cleanly list the current status of any Git repos it finds within any directory (and sub-directories) on your system**
+## git-summary
+**Cleanly lists the current status of any Git repositories it finds within any directory (and sub-directories) on your system**
 
 **If you ever experienced one of the following situations, `git-summary` is for you.**
 - I don't remember where some of my repositories are...
@@ -20,12 +20,13 @@
 - Cleanup Status, to be easier to read
   - Split Status into individual values for Counts?
 
-#### Credits
-A big thanks to the folks that wrote the (Linux) version of `git-summary` that this borrowed from:
-- [MirkoLedda](https://github.com/MirkoLedda/git-summary) 
-  - This is the project (a fork of a series of repositories, worked on by many people) used as a reference
-
-## `git-branch-status`
+## git-branch-status
 **Coming next in development**
+- Currently, `git-summary` does not list multiple branches per repo. However, for single repos [`git-branch-status`](https://github.com/bill-auger/git-branch-status) does this beautifully.
 
-Currently, `git-summary` does not list multiple branches per repo. However, for single repos [`git-branch-status`](https://github.com/bill-auger/git-branch-status) does this beautifully.
+## Credits
+A big thanks to the folks that wrote the (Linux) versions that this project borrowed from:
+- [MirkoLedda](https://github.com/MirkoLedda/git-summary) 
+  - This is the project (a fork of a series of repositories, worked on by many people) used as a reference for `git-summary`
+- [bill-auger](https://github.com/bill-auger/git-branch-status)
+  - This is the project (a fork of a series of repositories, worked on by many people) used as a reference for `git-branch-status`
