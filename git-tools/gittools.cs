@@ -100,15 +100,14 @@ namespace git_tools
                 bool unpushed = false;
                 bool stashed = false;
                 bool unmerged = false;
-                if (status != "nothing to commit, working tree clean")
-                {
+
                     if (status.IndexOf("Untracked") >=0)
                     {
                         untracked = true;
                     }
                     if (status.IndexOf("new file") >= 0)
                     {
-                        // There appears to never be any output ???
+                        // There appears to never be any data ???
                         newFiles = true;
                     }
                     if (status.IndexOf("modified") >= 0)
@@ -119,13 +118,13 @@ namespace git_tools
                     {
                         deleted = status.Select((c, i) => status.Substring(i)).Count(sub => sub.StartsWith("deleted"));
                     }
-                    // local has_upstream=`git -C $f rev-parse --abbrev-ref @{u} 2> /dev/null | wc -l`
-                    RunCommand("rev-parse --abbrev-ref", path, ref stdOutput, ref stdError);
-                    if (stdOutput != "" || stdError != "")
-                    {
-                        // There appears to never be any output ???
-                        stdError = stdOutput;
-                    }
+//                    // local has_upstream=`git -C $f rev-parse --abbrev-ref @{u} 2> /dev/null | wc -l`
+//                    RunCommand("rev-parse --abbrev-ref", path, ref stdOutput, ref stdError);
+//                    if (stdOutput != "" || stdError != "")
+//                    {
+//                        // There appears to never be any output ???
+//                        stdError = stdOutput;
+//                    }
                     RunCommand("log --pretty=format:'%h' ..@{u}", path, ref stdOutput, ref stdError);
                     if (stdOutput != "" || stdError != "")
                     {
@@ -136,7 +135,6 @@ namespace git_tools
                     {
                         unpushed = true;
                     }
-                }
                 RunCommand("stash list", path, ref stdOutput, ref stdError);
                 if (stdOutput != "" || stdError != "")
                 {
@@ -147,10 +145,11 @@ namespace git_tools
                 {
                     unmerged = true;
                 }
+                bool diff = (untracked || newFiles || modified != null || deleted != null || unpulled || unpushed || stashed || unmerged || status != "nothing to commit, working tree clean");
                 // Add Repository to List<>
-                if (showAll || status != "nothing to commit, working tree clean" || stashed || unmerged)
+                if (showAll || diff)
                 {
-                    Repos.Add(new Repository(folder, branch, status, remote, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged));
+                    Repos.Add(new Repository(folder, branch, status, diff, remote, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged));
                 }
                 boolReturn = true;
             }

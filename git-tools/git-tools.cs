@@ -179,7 +179,7 @@ namespace git_tools
                 // After List<> has been built, now load DataGrid with results
                 dgvGitSummary.DataSource = gt.Repos;
                 // Highlight rows with changes
-                foreach ( DataGridViewRow row in dgvGitSummary.Rows)
+                foreach (DataGridViewRow row in dgvGitSummary.Rows)
                 {
                     if ((bool?)row.Cells[2].Value == true)
                     {

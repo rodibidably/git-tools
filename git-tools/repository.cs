@@ -30,13 +30,13 @@
         public bool Stashed { get => _Stashed; set => _Stashed = value; }
         public bool Unmerged { get => _Unmerged; set => _Unmerged = value; }
         // Constructors
-        public Repository(string folder, string branch, string status, string remote, bool untracked, bool newFiles, int? modified, int? deleted, bool unpulled, bool unpushed, bool stashed, bool unmerged)
+        public Repository(string folder, string branch, string status, bool diff, string remote, bool untracked, bool newFiles, int? modified, int? deleted, bool unpulled, bool unpushed, bool stashed, bool unmerged)
         {
             _Folder = folder;
             _Branch = branch;
             _Status = status;
             _Remote = remote;
-            _Diff = (untracked || newFiles || modified != null || deleted != null || unpulled || unpushed || stashed || unmerged || status != "nothing to commit, working tree clean");
+            _Diff = diff;
             _Untracked = untracked;
             _NewFiles = newFiles;
             _Modified = modified;
