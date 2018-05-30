@@ -22,6 +22,7 @@ namespace git_tools
             toolTips.SetToolTip(chkLocalSummary, "Checks only local changes (no Fetch first), which is faster.");
             toolTips.SetToolTip(chkDeepLookup, "Will look for Git repos recursivly within the directory tree (does not search sub folders under a Git repo). Can be slow for large trees.");
             toolTips.SetToolTip(chkShowAll, "Show all Repos, even those without changes.");
+            lblGitSummaryProgress.Text = "";
             dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgvGitSummary.AutoGenerateColumns = false;
             // Determine if Git is installed in default location
@@ -48,9 +49,8 @@ namespace git_tools
             lblGitVersion.Text = "";
             btnGitSummary.Enabled = false;
             btnGitBranchStatus.Enabled = false;
-            if (tabNav.TabPages.Contains(tabGitSummary))
+            if (tabNav.TabPages.Contains(tabGitBranchStatus))
             {
-                tabNav.TabPages.Remove(tabGitSummary);
                 tabNav.TabPages.Remove(tabGitBranchStatus);
             }
             // Validate Git is installed
@@ -134,19 +134,15 @@ namespace git_tools
                     configuration.Save(ConfigurationSaveMode.Full, true);
                     ConfigurationManager.RefreshSection("appSettings");
 //                    ConfigurationManager.AppSettings["LastPath"] = fbdPath.SelectedPath;
-                    // Cleanup form (to default / selected values) before processing
+                    // Cleanup form (to default / selected values / lock fields) before processing
                     lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
-                    lblGitSummaryOptions.Text = chkLocalSummary.Text + "=" + chkLocalSummary.Checked;
-                    lblGitSummaryOptions.Text += " | " + chkDeepLookup.Text + "=" + chkDeepLookup.Checked;
-                    lblGitSummaryOptions.Text += " | " + chkShowAll.Text + "=" + chkShowAll.Checked;
-                    if (!tabNav.TabPages.Contains(tabGitSummary))
-                    {
-                        tabNav.TabPages.Add(tabGitSummary);
-                    }
-                    tabNav.SelectedTab = tabGitSummary;
                     lblGitSummaryProgress.Visible = true;
-                    lblGitSummaryProgress.Text = ("0%");
+                    lblGitSummaryProgress.Text = ("Processing: 0%");
                     dgvGitSummary.Visible = false;
+                    chkLocalSummary.Enabled = false;
+                    chkDeepLookup.Enabled = false;
+                    chkShowAll.Enabled = false;
+                    btnGitSummary.Enabled = false;
                     // Start the asynchronous operation (essentially: bwGitSummary_DoWork)
                     bwGitSummary.RunWorkerAsync();
                 }
@@ -162,7 +158,7 @@ namespace git_tools
         private void bwGitSummary_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // This event handler updates the progress
-            lblGitSummaryProgress.Text = (e.ProgressPercentage.ToString() + "%");
+            lblGitSummaryProgress.Text = ("Processing: " + e.ProgressPercentage.ToString() + "%");
         }
         private void bwGitSummary_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -190,6 +186,12 @@ namespace git_tools
                         row.DefaultCellStyle.BackColor = System.Drawing.Color.Beige;
                     }
                 }
+                // Cleanup form after processing, to enable fields
+                chkLocalSummary.Enabled = true;
+                chkDeepLookup.Enabled = true;
+                chkShowAll.Enabled = true;
+                btnGitSummary.Enabled = true;
+                tabNav.SelectedTab = tabGitSummary;
             }
         }
         private void dgvGitSummary_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -212,8 +214,8 @@ namespace git_tools
             if (!tabNav.TabPages.Contains(tabGitBranchStatus))
             {
                 tabNav.TabPages.Add(tabGitBranchStatus);
-                tabNav.SelectedTab = tabGitBranchStatus;
             }
+            tabNav.SelectedTab = tabGitBranchStatus;
         }
     }
 }

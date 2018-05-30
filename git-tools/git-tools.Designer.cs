@@ -29,26 +29,34 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabNav = new System.Windows.Forms.TabControl();
             this.tabGitTools = new System.Windows.Forms.TabPage();
-            this.chkShowAll = new System.Windows.Forms.CheckBox();
-            this.chkDeepLookup = new System.Windows.Forms.CheckBox();
-            this.chkLocalSummary = new System.Windows.Forms.CheckBox();
             this.btnGitBranchStatus = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.btnGitSummary = new System.Windows.Forms.Button();
             this.lnkGitTools = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.tabGitSummary = new System.Windows.Forms.TabPage();
             this.lblGitSummaryProgress = new System.Windows.Forms.Label();
-            this.lblGitSummaryOptions = new System.Windows.Forms.Label();
             this.lnkGitSummaryRoot = new System.Windows.Forms.LinkLabel();
             this.dgvGitSummary = new System.Windows.Forms.DataGridView();
+            this.Folder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Branch = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Diff = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Untracked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.NewFiles = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Deleted = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Unpulled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Unpushed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Stashed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Unmerged = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remote = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabGitBranchStatus = new System.Windows.Forms.TabPage();
             this.ofdGit = new System.Windows.Forms.OpenFileDialog();
             this.lnkGitLocation = new System.Windows.Forms.LinkLabel();
@@ -64,19 +72,11 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
-            this.Folder = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Branch = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Diff = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Untracked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.NewFiles = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Deleted = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Unpulled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Unpushed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Stashed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Unmerged = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Remote = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.backgroundWorker4 = new System.ComponentModel.BackgroundWorker();
+            this.chkShowAll = new System.Windows.Forms.CheckBox();
+            this.chkDeepLookup = new System.Windows.Forms.CheckBox();
+            this.chkLocalSummary = new System.Windows.Forms.CheckBox();
+            this.btnGitSummary = new System.Windows.Forms.Button();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -96,13 +96,9 @@
             // 
             // tabGitTools
             // 
-            this.tabGitTools.Controls.Add(this.chkShowAll);
-            this.tabGitTools.Controls.Add(this.chkDeepLookup);
-            this.tabGitTools.Controls.Add(this.chkLocalSummary);
             this.tabGitTools.Controls.Add(this.btnGitBranchStatus);
             this.tabGitTools.Controls.Add(this.label5);
             this.tabGitTools.Controls.Add(this.label6);
-            this.tabGitTools.Controls.Add(this.btnGitSummary);
             this.tabGitTools.Controls.Add(this.lnkGitTools);
             this.tabGitTools.Controls.Add(this.label3);
             this.tabGitTools.Location = new System.Drawing.Point(4, 22);
@@ -112,40 +108,6 @@
             this.tabGitTools.TabIndex = 2;
             this.tabGitTools.Text = "git-tools";
             this.tabGitTools.UseVisualStyleBackColor = true;
-            // 
-            // chkShowAll
-            // 
-            this.chkShowAll.AutoSize = true;
-            this.chkShowAll.Checked = true;
-            this.chkShowAll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowAll.Location = new System.Drawing.Point(210, 71);
-            this.chkShowAll.Name = "chkShowAll";
-            this.chkShowAll.Size = new System.Drawing.Size(67, 17);
-            this.chkShowAll.TabIndex = 23;
-            this.chkShowAll.Text = "Show All";
-            this.chkShowAll.UseVisualStyleBackColor = true;
-            // 
-            // chkDeepLookup
-            // 
-            this.chkDeepLookup.AutoSize = true;
-            this.chkDeepLookup.Location = new System.Drawing.Point(113, 71);
-            this.chkDeepLookup.Name = "chkDeepLookup";
-            this.chkDeepLookup.Size = new System.Drawing.Size(91, 17);
-            this.chkDeepLookup.TabIndex = 22;
-            this.chkDeepLookup.Text = "Deep Lookup";
-            this.chkDeepLookup.UseVisualStyleBackColor = true;
-            // 
-            // chkLocalSummary
-            // 
-            this.chkLocalSummary.AutoSize = true;
-            this.chkLocalSummary.Checked = true;
-            this.chkLocalSummary.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkLocalSummary.Location = new System.Drawing.Point(9, 71);
-            this.chkLocalSummary.Name = "chkLocalSummary";
-            this.chkLocalSummary.Size = new System.Drawing.Size(98, 17);
-            this.chkLocalSummary.TabIndex = 21;
-            this.chkLocalSummary.Text = "Local Summary";
-            this.chkLocalSummary.UseVisualStyleBackColor = true;
             // 
             // btnGitBranchStatus
             // 
@@ -177,20 +139,10 @@
             this.label6.Text = "git-summary cleanly lists the current status of any Git repositories it finds wit" +
     "hin any directory (and sub-directories) on your system";
             // 
-            // btnGitSummary
-            // 
-            this.btnGitSummary.Location = new System.Drawing.Point(283, 71);
-            this.btnGitSummary.Name = "btnGitSummary";
-            this.btnGitSummary.Size = new System.Drawing.Size(93, 26);
-            this.btnGitSummary.TabIndex = 14;
-            this.btnGitSummary.Text = "git-summary";
-            this.btnGitSummary.UseVisualStyleBackColor = true;
-            this.btnGitSummary.Click += new System.EventHandler(this.btnGitSummary_Click);
-            // 
             // lnkGitTools
             // 
             this.lnkGitTools.AutoSize = true;
-            this.lnkGitTools.Location = new System.Drawing.Point(6, 29);
+            this.lnkGitTools.Location = new System.Drawing.Point(6, 16);
             this.lnkGitTools.Name = "lnkGitTools";
             this.lnkGitTools.Size = new System.Drawing.Size(191, 13);
             this.lnkGitTools.TabIndex = 14;
@@ -211,8 +163,11 @@
             // 
             // tabGitSummary
             // 
+            this.tabGitSummary.Controls.Add(this.chkShowAll);
+            this.tabGitSummary.Controls.Add(this.chkDeepLookup);
+            this.tabGitSummary.Controls.Add(this.chkLocalSummary);
+            this.tabGitSummary.Controls.Add(this.btnGitSummary);
             this.tabGitSummary.Controls.Add(this.lblGitSummaryProgress);
-            this.tabGitSummary.Controls.Add(this.lblGitSummaryOptions);
             this.tabGitSummary.Controls.Add(this.lnkGitSummaryRoot);
             this.tabGitSummary.Controls.Add(this.dgvGitSummary);
             this.tabGitSummary.Location = new System.Drawing.Point(4, 22);
@@ -228,22 +183,13 @@
             this.lblGitSummaryProgress.AutoSize = true;
             this.lblGitSummaryProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGitSummaryProgress.ForeColor = System.Drawing.Color.DarkGreen;
-            this.lblGitSummaryProgress.Location = new System.Drawing.Point(6, 81);
+            this.lblGitSummaryProgress.Location = new System.Drawing.Point(6, 80);
             this.lblGitSummaryProgress.MinimumSize = new System.Drawing.Size(740, 0);
             this.lblGitSummaryProgress.Name = "lblGitSummaryProgress";
             this.lblGitSummaryProgress.Size = new System.Drawing.Size(740, 29);
             this.lblGitSummaryProgress.TabIndex = 17;
             this.lblGitSummaryProgress.Text = "lblGitSummaryProgress";
             this.lblGitSummaryProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblGitSummaryOptions
-            // 
-            this.lblGitSummaryOptions.AutoSize = true;
-            this.lblGitSummaryOptions.Location = new System.Drawing.Point(6, 16);
-            this.lblGitSummaryOptions.Name = "lblGitSummaryOptions";
-            this.lblGitSummaryOptions.Size = new System.Drawing.Size(109, 13);
-            this.lblGitSummaryOptions.TabIndex = 15;
-            this.lblGitSummaryOptions.Text = "lblGitSummaryOptions";
             // 
             // lnkGitSummaryRoot
             // 
@@ -276,13 +222,146 @@
             this.Unmerged,
             this.Status,
             this.Remote});
-            this.dgvGitSummary.Location = new System.Drawing.Point(6, 32);
+            this.dgvGitSummary.Location = new System.Drawing.Point(6, 45);
             this.dgvGitSummary.Name = "dgvGitSummary";
             this.dgvGitSummary.ReadOnly = true;
-            this.dgvGitSummary.Size = new System.Drawing.Size(740, 315);
+            this.dgvGitSummary.Size = new System.Drawing.Size(740, 302);
             this.dgvGitSummary.TabIndex = 15;
             this.dgvGitSummary.Visible = false;
             this.dgvGitSummary.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGitSummary_CellContentClick);
+            // 
+            // Folder
+            // 
+            this.Folder.DataPropertyName = "Folder";
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.Blue;
+            this.Folder.DefaultCellStyle = dataGridViewCellStyle17;
+            this.Folder.HeaderText = "Folder";
+            this.Folder.Name = "Folder";
+            this.Folder.ReadOnly = true;
+            this.Folder.Width = 61;
+            // 
+            // Branch
+            // 
+            this.Branch.DataPropertyName = "Branch";
+            this.Branch.HeaderText = "Branch";
+            this.Branch.Name = "Branch";
+            this.Branch.ReadOnly = true;
+            this.Branch.Width = 66;
+            // 
+            // Diff
+            // 
+            this.Diff.DataPropertyName = "Diff";
+            this.Diff.HeaderText = "Diff";
+            this.Diff.Name = "Diff";
+            this.Diff.ReadOnly = true;
+            this.Diff.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Diff.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Diff.Visible = false;
+            this.Diff.Width = 48;
+            // 
+            // Untracked
+            // 
+            this.Untracked.DataPropertyName = "Untracked";
+            this.Untracked.HeaderText = "Untracked";
+            this.Untracked.Name = "Untracked";
+            this.Untracked.ReadOnly = true;
+            this.Untracked.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Untracked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Untracked.Width = 82;
+            // 
+            // NewFiles
+            // 
+            this.NewFiles.DataPropertyName = "NewFiles";
+            this.NewFiles.HeaderText = "NewFiles";
+            this.NewFiles.Name = "NewFiles";
+            this.NewFiles.ReadOnly = true;
+            this.NewFiles.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.NewFiles.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.NewFiles.Visible = false;
+            this.NewFiles.Width = 75;
+            // 
+            // Modified
+            // 
+            this.Modified.DataPropertyName = "Modified";
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle18.NullValue = " ";
+            this.Modified.DefaultCellStyle = dataGridViewCellStyle18;
+            this.Modified.HeaderText = "Modified";
+            this.Modified.Name = "Modified";
+            this.Modified.ReadOnly = true;
+            this.Modified.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Modified.Width = 72;
+            // 
+            // Deleted
+            // 
+            this.Deleted.DataPropertyName = "Deleted";
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle19.NullValue = " ";
+            this.Deleted.DefaultCellStyle = dataGridViewCellStyle19;
+            this.Deleted.HeaderText = "Deleted";
+            this.Deleted.Name = "Deleted";
+            this.Deleted.ReadOnly = true;
+            this.Deleted.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Deleted.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Deleted.Width = 50;
+            // 
+            // Unpulled
+            // 
+            this.Unpulled.DataPropertyName = "Unpulled";
+            this.Unpulled.HeaderText = "Unpulled";
+            this.Unpulled.Name = "Unpulled";
+            this.Unpulled.ReadOnly = true;
+            this.Unpulled.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Unpulled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Unpulled.Width = 74;
+            // 
+            // Unpushed
+            // 
+            this.Unpushed.DataPropertyName = "Unpushed";
+            this.Unpushed.HeaderText = "Unpushed";
+            this.Unpushed.Name = "Unpushed";
+            this.Unpushed.ReadOnly = true;
+            this.Unpushed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Unpushed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Unpushed.Width = 81;
+            // 
+            // Stashed
+            // 
+            this.Stashed.DataPropertyName = "Stashed";
+            this.Stashed.HeaderText = "Stashed";
+            this.Stashed.Name = "Stashed";
+            this.Stashed.ReadOnly = true;
+            this.Stashed.Width = 52;
+            // 
+            // Unmerged
+            // 
+            this.Unmerged.DataPropertyName = "Unmerged";
+            this.Unmerged.HeaderText = "Unmerged";
+            this.Unmerged.Name = "Unmerged";
+            this.Unmerged.ReadOnly = true;
+            this.Unmerged.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Unmerged.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Unmerged.Width = 81;
+            // 
+            // Status
+            // 
+            this.Status.DataPropertyName = "Status";
+            this.Status.HeaderText = "Status";
+            this.Status.Name = "Status";
+            this.Status.ReadOnly = true;
+            this.Status.Width = 62;
+            // 
+            // Remote
+            // 
+            this.Remote.DataPropertyName = "Remote";
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Blue;
+            this.Remote.DefaultCellStyle = dataGridViewCellStyle20;
+            this.Remote.HeaderText = "Remote";
+            this.Remote.Name = "Remote";
+            this.Remote.ReadOnly = true;
+            this.Remote.Width = 69;
             // 
             // tabGitBranchStatus
             // 
@@ -382,138 +461,49 @@
             this.bwGitSummary.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwGitSummary_ProgressChanged);
             this.bwGitSummary.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwGitSummary_RunWorkerCompleted);
             // 
-            // Folder
+            // chkShowAll
             // 
-            this.Folder.DataPropertyName = "Folder";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Blue;
-            this.Folder.DefaultCellStyle = dataGridViewCellStyle1;
-            this.Folder.HeaderText = "Folder";
-            this.Folder.Name = "Folder";
-            this.Folder.ReadOnly = true;
-            this.Folder.Width = 61;
+            this.chkShowAll.AutoSize = true;
+            this.chkShowAll.Checked = true;
+            this.chkShowAll.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowAll.Location = new System.Drawing.Point(209, 19);
+            this.chkShowAll.Name = "chkShowAll";
+            this.chkShowAll.Size = new System.Drawing.Size(67, 17);
+            this.chkShowAll.TabIndex = 27;
+            this.chkShowAll.Text = "Show All";
+            this.chkShowAll.UseVisualStyleBackColor = true;
             // 
-            // Branch
+            // chkDeepLookup
             // 
-            this.Branch.DataPropertyName = "Branch";
-            this.Branch.HeaderText = "Branch";
-            this.Branch.Name = "Branch";
-            this.Branch.ReadOnly = true;
-            this.Branch.Width = 66;
+            this.chkDeepLookup.AutoSize = true;
+            this.chkDeepLookup.Location = new System.Drawing.Point(112, 19);
+            this.chkDeepLookup.Name = "chkDeepLookup";
+            this.chkDeepLookup.Size = new System.Drawing.Size(91, 17);
+            this.chkDeepLookup.TabIndex = 26;
+            this.chkDeepLookup.Text = "Deep Lookup";
+            this.chkDeepLookup.UseVisualStyleBackColor = true;
             // 
-            // Diff
+            // chkLocalSummary
             // 
-            this.Diff.DataPropertyName = "Diff";
-            this.Diff.HeaderText = "Diff";
-            this.Diff.Name = "Diff";
-            this.Diff.ReadOnly = true;
-            this.Diff.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Diff.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Diff.Visible = false;
-            this.Diff.Width = 48;
+            this.chkLocalSummary.AutoSize = true;
+            this.chkLocalSummary.Checked = true;
+            this.chkLocalSummary.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkLocalSummary.Location = new System.Drawing.Point(8, 19);
+            this.chkLocalSummary.Name = "chkLocalSummary";
+            this.chkLocalSummary.Size = new System.Drawing.Size(98, 17);
+            this.chkLocalSummary.TabIndex = 25;
+            this.chkLocalSummary.Text = "Local Summary";
+            this.chkLocalSummary.UseVisualStyleBackColor = true;
             // 
-            // Untracked
+            // btnGitSummary
             // 
-            this.Untracked.DataPropertyName = "Untracked";
-            this.Untracked.HeaderText = "Untracked";
-            this.Untracked.Name = "Untracked";
-            this.Untracked.ReadOnly = true;
-            this.Untracked.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Untracked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Untracked.Width = 82;
-            // 
-            // NewFiles
-            // 
-            this.NewFiles.DataPropertyName = "NewFiles";
-            this.NewFiles.HeaderText = "NewFiles";
-            this.NewFiles.Name = "NewFiles";
-            this.NewFiles.ReadOnly = true;
-            this.NewFiles.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.NewFiles.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.NewFiles.Visible = false;
-            this.NewFiles.Width = 75;
-            // 
-            // Modified
-            // 
-            this.Modified.DataPropertyName = "Modified";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.NullValue = " ";
-            this.Modified.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Modified.HeaderText = "Modified";
-            this.Modified.Name = "Modified";
-            this.Modified.ReadOnly = true;
-            this.Modified.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Modified.Width = 72;
-            // 
-            // Deleted
-            // 
-            this.Deleted.DataPropertyName = "Deleted";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.NullValue = " ";
-            this.Deleted.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Deleted.HeaderText = "Deleted";
-            this.Deleted.Name = "Deleted";
-            this.Deleted.ReadOnly = true;
-            this.Deleted.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Deleted.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Deleted.Width = 50;
-            // 
-            // Unpulled
-            // 
-            this.Unpulled.DataPropertyName = "Unpulled";
-            this.Unpulled.HeaderText = "Unpulled";
-            this.Unpulled.Name = "Unpulled";
-            this.Unpulled.ReadOnly = true;
-            this.Unpulled.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Unpulled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Unpulled.Width = 74;
-            // 
-            // Unpushed
-            // 
-            this.Unpushed.DataPropertyName = "Unpushed";
-            this.Unpushed.HeaderText = "Unpushed";
-            this.Unpushed.Name = "Unpushed";
-            this.Unpushed.ReadOnly = true;
-            this.Unpushed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Unpushed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Unpushed.Width = 81;
-            // 
-            // Stashed
-            // 
-            this.Stashed.DataPropertyName = "Stashed";
-            this.Stashed.HeaderText = "Stashed";
-            this.Stashed.Name = "Stashed";
-            this.Stashed.ReadOnly = true;
-            this.Stashed.Width = 52;
-            // 
-            // Unmerged
-            // 
-            this.Unmerged.DataPropertyName = "Unmerged";
-            this.Unmerged.HeaderText = "Unmerged";
-            this.Unmerged.Name = "Unmerged";
-            this.Unmerged.ReadOnly = true;
-            this.Unmerged.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Unmerged.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Unmerged.Width = 81;
-            // 
-            // Status
-            // 
-            this.Status.DataPropertyName = "Status";
-            this.Status.HeaderText = "Status";
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
-            this.Status.Width = 62;
-            // 
-            // Remote
-            // 
-            this.Remote.DataPropertyName = "Remote";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Blue;
-            this.Remote.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Remote.HeaderText = "Remote";
-            this.Remote.Name = "Remote";
-            this.Remote.ReadOnly = true;
-            this.Remote.Width = 69;
+            this.btnGitSummary.Location = new System.Drawing.Point(282, 13);
+            this.btnGitSummary.Name = "btnGitSummary";
+            this.btnGitSummary.Size = new System.Drawing.Size(93, 26);
+            this.btnGitSummary.TabIndex = 24;
+            this.btnGitSummary.Text = "git-summary";
+            this.btnGitSummary.UseVisualStyleBackColor = true;
+            this.btnGitSummary.Click += new System.EventHandler(this.btnGitSummary_Click);
             // 
             // Git_Tools
             // 
@@ -561,22 +551,17 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.LinkLabel lnkGitTools;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btnGitSummary;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnGitBranchStatus;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.LinkLabel lnkGitInstall;
-        private System.Windows.Forms.CheckBox chkLocalSummary;
-        private System.Windows.Forms.CheckBox chkDeepLookup;
         private System.Windows.Forms.ToolTip toolTips;
         private System.Windows.Forms.FolderBrowserDialog fbdPath;
         private System.Windows.Forms.LinkLabel lnkGitSummaryRoot;
-        private System.Windows.Forms.Label lblGitSummaryOptions;
         private System.ComponentModel.BackgroundWorker bwGitSummary;
         private System.Windows.Forms.Label lblGitSummaryProgress;
         private System.Windows.Forms.DataGridView dgvGitSummary;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.CheckBox chkShowAll;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.ComponentModel.BackgroundWorker backgroundWorker3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Folder;
@@ -592,6 +577,11 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Unmerged;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Remote;
+        private System.ComponentModel.BackgroundWorker backgroundWorker4;
+        private System.Windows.Forms.CheckBox chkShowAll;
+        private System.Windows.Forms.CheckBox chkDeepLookup;
+        private System.Windows.Forms.CheckBox chkLocalSummary;
+        private System.Windows.Forms.Button btnGitSummary;
     }
 }
 
