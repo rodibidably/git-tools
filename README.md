@@ -15,6 +15,7 @@
 - **Folder Selection** - The folder to run git-summary against
 - **Local Summary** (default = on) - Checks only local changes (does not first run `git fetch`), which runs faster
 - **Deep Lookup** (default = off) - Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo). Can be slow for large directory trees
+- **Show All** (default = on) - Show all Repos, even those without changes
 
 ## git-branch-status
 **Coming next in development**
