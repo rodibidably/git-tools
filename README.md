@@ -22,7 +22,5 @@
 
 ## Credits
 A big thanks to the folks that wrote the (Linux) versions that this project borrowed from:
-- [MirkoLedda](https://github.com/MirkoLedda/git-summary) 
-  - This is the project (a fork of a series of repositories, worked on by many people) used as a reference for `git-summary`
-- [bill-auger](https://github.com/bill-auger/git-branch-status)
-  - This is the project (a fork of a series of repositories, worked on by many people) used as a reference for `git-branch-status`
+- [MirkoLedda](https://github.com/MirkoLedda/git-summary) - The project used as a reference for `git-summary`
+- [bill-auger](https://github.com/bill-auger/git-branch-status) - The project used as a reference for `git-branch-status`
