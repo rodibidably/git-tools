@@ -11,6 +11,7 @@
         public string Branch { get => _Branch; set => _Branch = value; }
         public string Status { get => _Status; set => _Status = value; }
         public string Remote { get => _Remote; set => _Remote = value; }
+        private bool _Diff;
         private bool _Untracked;
         private bool _NewFiles;
         private int? _Modified;
@@ -19,6 +20,7 @@
         private bool _Unpushed;
         private bool _Stashed;
         private bool _Unmerged;
+        public bool Diff { get => _Diff; set => _Diff = value; }
         public bool Untracked { get => _Untracked; set => _Untracked = value; }
         public bool NewFiles { get => _NewFiles; set => _NewFiles = value; }
         public int? Modified { get => _Modified; set => _Modified = value; }
@@ -34,6 +36,7 @@
             _Branch = branch;
             _Status = status;
             _Remote = remote;
+            _Diff = (untracked || newFiles || modified != null || deleted != null || unpulled || unpushed || stashed || unmerged || status != "nothing to commit, working tree clean");
             _Untracked = untracked;
             _NewFiles = newFiles;
             _Modified = modified;

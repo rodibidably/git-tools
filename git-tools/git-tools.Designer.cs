@@ -63,8 +63,10 @@
             this.bwGitSummary = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
             this.Folder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Branch = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Diff = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Untracked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.NewFiles = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -263,6 +265,7 @@
             this.dgvGitSummary.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Folder,
             this.Branch,
+            this.Diff,
             this.Untracked,
             this.NewFiles,
             this.Modified,
@@ -397,6 +400,17 @@
             this.Branch.Name = "Branch";
             this.Branch.ReadOnly = true;
             this.Branch.Width = 66;
+            // 
+            // Diff
+            // 
+            this.Diff.DataPropertyName = "Diff";
+            this.Diff.HeaderText = "Diff";
+            this.Diff.Name = "Diff";
+            this.Diff.ReadOnly = true;
+            this.Diff.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Diff.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Diff.Visible = false;
+            this.Diff.Width = 48;
             // 
             // Untracked
             // 
@@ -563,8 +577,11 @@
         private System.Windows.Forms.DataGridView dgvGitSummary;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.CheckBox chkShowAll;
+        private System.ComponentModel.BackgroundWorker backgroundWorker2;
+        private System.ComponentModel.BackgroundWorker backgroundWorker3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Folder;
         private System.Windows.Forms.DataGridViewTextBoxColumn Branch;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Diff;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Untracked;
         private System.Windows.Forms.DataGridViewCheckBoxColumn NewFiles;
         private System.Windows.Forms.DataGridViewTextBoxColumn Modified;
@@ -575,7 +592,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Unmerged;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Remote;
-        private System.ComponentModel.BackgroundWorker backgroundWorker2;
     }
 }
 

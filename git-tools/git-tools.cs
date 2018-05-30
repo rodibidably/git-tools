@@ -182,6 +182,14 @@ namespace git_tools
                 dgvGitSummary.Visible = true;
                 // After List<> has been built, now load DataGrid with results
                 dgvGitSummary.DataSource = gt.Repos;
+                // Highlight rows with changes
+                foreach ( DataGridViewRow row in dgvGitSummary.Rows)
+                {
+                    if ((bool?)row.Cells[2].Value == true)
+                    {
+                        row.DefaultCellStyle.BackColor = System.Drawing.Color.Beige;
+                    }
+                }
             }
         }
         private void dgvGitSummary_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -191,7 +199,7 @@ namespace git_tools
                 // Open Windows Explorer to the selected Git Repository
                 Process.Start(lnkGitSummaryRoot.Text + dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
             }
-            else if (e.RowIndex >= 0 && e.ColumnIndex == 9)
+            else if (e.RowIndex >= 0 && e.ColumnIndex == 12)
             {
                 // Open Default Browser to the GitHub Project
                 System.Diagnostics.Process.Start(dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
