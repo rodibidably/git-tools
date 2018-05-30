@@ -6,9 +6,11 @@
         private string _Folder;
         private string _Branch;
         private string _Status;
+        private string _Remote;
         public string Folder { get => _Folder; set => _Folder = value; }
         public string Branch { get => _Branch; set => _Branch = value; }
         public string Status { get => _Status; set => _Status = value; }
+        public string Remote { get => _Remote; set => _Remote = value; }
         private bool _Untracked;
         private bool _NewFiles;
         private bool _Modified;
@@ -28,11 +30,12 @@
             _Branch = branch;
             _Status = status;
         }
-        public Repository(string folder, string branch, string status, bool untracked, bool newFiles, bool modified, bool deleted, bool unpulled, bool unpushed)
+        public Repository(string folder, string branch, string status, string remote, bool untracked, bool newFiles, bool modified, bool deleted, bool unpulled, bool unpushed)
         {
             _Folder = folder;
             _Branch = branch;
             _Status = status;
+            _Remote = remote;
             _Untracked = untracked;
             _NewFiles = newFiles;
             _Modified = modified;

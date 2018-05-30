@@ -189,6 +189,11 @@ namespace git_tools
                 // Open Windows Explorer to the selected Git Repository
                 Process.Start(lnkGitSummaryRoot.Text + dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
             }
+            else if (e.RowIndex >= 0 && e.ColumnIndex == 9)
+            {
+                // Open Default Browser to the GitHub Project
+                System.Diagnostics.Process.Start(dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+            }
         }
         // git-branch-status
         private void btnGitBranchStatus_Click(object sender, EventArgs e)

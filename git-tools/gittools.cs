@@ -87,6 +87,9 @@ namespace git_tools
                 string status = ParseOutput_Status(stdOutput);
                 RunCommand("symbolic-ref HEAD", path, ref stdOutput, ref stdError);
                 string branch = ParseOutput_Branch(stdOutput);
+                //git - C $1 remote get-url
+                RunCommand("remote get-url origin", path, ref stdOutput, ref stdError);
+                string remote = stdOutput;
                 // Split status into individual values for Counts
                 bool untracked = false;
                 bool newFiles = false;
@@ -135,7 +138,7 @@ namespace git_tools
                     }
                 }
                 // Add Repository to List<>
-                Repos.Add(new Repository(folder, branch, status, untracked, newFiles, modified, deleted, unpulled, unpushed));
+                Repos.Add(new Repository(folder, branch, status, remote, untracked, newFiles, modified, deleted, unpulled, unpushed));
                 boolReturn = true;
             }
 
