@@ -19,9 +19,13 @@ namespace git_tools
         private void GitTools_Load(object sender, EventArgs e)
         {
             // Set One-Time form values that can't be set through designer and never change
-            toolTips.SetToolTip(chkRunFetch, "Checks only local changes (no Fetch first), which is faster.");
-            toolTips.SetToolTip(chkRecursive, "Will look for Git repos recursivly within the directory tree (does not search sub folders under a Git repo). Can be slow for large trees.");
-            toolTips.SetToolTip(chkShowAll, "Show all Repos, even those without changes.");
+            toolTips.SetToolTip(chkRunFetch, "Checks local and remote changes (i.e. first run `git fetch`); Runs slower");
+            toolTips.SetToolTip(chkRunUnpulled, "Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' ..@{u}`); Runs slower");
+            toolTips.SetToolTip(chkRunUnpushed, "Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' @{u}..`); Runs slower");
+            toolTips.SetToolTip(chkRunStashed, "Checks local and remote changes (i.e. first run `git stash list`); Runs slower");
+            toolTips.SetToolTip(chkRunUnmerged, "Checks local and remote changes (i.e. first run `git branch --no-merged master`); Runs slower");
+            toolTips.SetToolTip(chkRecursive, "Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo); Can be slow for large directory trees");
+            toolTips.SetToolTip(chkShowAll, "Show all Repositories in List, even those without changes");
             lblGitSummaryProgress.Text = "";
             lnkGitSummaryRoot.Text = "";
             dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
