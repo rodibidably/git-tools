@@ -16,10 +16,6 @@
 - **Local Summary** (default = on) - Checks only local changes (does not first run `git fetch`), which runs faster
 - **Deep Lookup** (default = off) - Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo). Can be slow for large directory trees
 
-#### ToDo:
-- Cleanup Status, to be easier to read
-  - Split Status into individual values for Counts?
-
 ## git-branch-status
 **Coming next in development**
 - Currently, `git-summary` does not list multiple branches per repo. However, for single repos [`git-branch-status`](https://github.com/bill-auger/git-branch-status) does this beautifully.
