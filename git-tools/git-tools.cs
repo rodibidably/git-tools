@@ -54,10 +54,6 @@ namespace git_tools
             lblGitVersion.Text = "";
             btnGitSummary.Enabled = false;
             btnGitBranchStatus.Enabled = false;
-            if (tabNav.TabPages.Contains(tabGitBranchStatus))
-            {
-                tabNav.TabPages.Remove(tabGitBranchStatus);
-            }
             // Validate Git is installed
             if (!gt.IsGitInstalled(pathGit))
             {
@@ -229,11 +225,8 @@ namespace git_tools
         private void btnGitBranchStatus_Click(object sender, EventArgs e)
         {
             // 
-            if (!tabNav.TabPages.Contains(tabGitBranchStatus))
-            {
-                tabNav.TabPages.Add(tabGitBranchStatus);
-            }
-            tabNav.SelectedTab = tabGitBranchStatus;
+            MessageBox.Show("git-branch-status will be coming next in development", "Coming next in development", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            tabNav.SelectedTab = tabGitSummary;
         }
     }
 }
