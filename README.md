@@ -14,7 +14,7 @@ If you ever experienced one of the following situations, `git-summary` is for yo
 #### Options
 - **Folder Selection** - The folder to run git-summary against; Selected on Button_Click
 - **Run 'Fetch'** - Checks local and remote changes (i.e. first run `git fetch`); Runs slower
-- **Run 'Unpulled`** - Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' ..@{u}`); Runs slower
+- **Run 'Unpulled'** - Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' ..@{u}`); Runs slower
 - **Run 'Unpushed'** - Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' @{u}..`); Runs slower
 - **Run 'Stashed'** - Checks local and remote changes (i.e. first run `git stash list`); Runs slower
 - **Run 'Unmerged'** - Checks local and remote changes (i.e. first run `git branch --no-merged master`); Runs slower
