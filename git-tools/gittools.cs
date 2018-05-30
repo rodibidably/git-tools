@@ -99,6 +99,7 @@ namespace git_tools
                 bool unpulled = false;
                 bool unpushed = false;
                 bool stashed = false;
+                bool unmerged = false;
                 if (status != "nothing to commit, working tree clean")
                 {
                     if (status.IndexOf("Untracked") >=0)
@@ -141,10 +142,15 @@ namespace git_tools
                 {
                     stashed = true;
                 }
-                // Add Repository to List<>
-                if (showAll || status != "nothing to commit, working tree clean")
+                RunCommand("branch --no-merged master", path, ref stdOutput, ref stdError);
+                if (stdOutput != "" || stdError != "")
                 {
-                    Repos.Add(new Repository(folder, branch, status, remote, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed));
+                    unmerged = true;
+                }
+                // Add Repository to List<>
+                if (showAll || status != "nothing to commit, working tree clean" || stashed || unmerged)
+                {
+                    Repos.Add(new Repository(folder, branch, status, remote, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged));
                 }
                 boolReturn = true;
             }

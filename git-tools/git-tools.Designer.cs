@@ -62,6 +62,7 @@
             this.fbdPath = new System.Windows.Forms.FolderBrowserDialog();
             this.bwGitSummary = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.Folder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Branch = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Untracked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -71,6 +72,7 @@
             this.Unpulled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Unpushed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Stashed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Unmerged = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Remote = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabNav.SuspendLayout();
@@ -268,6 +270,7 @@
             this.Unpulled,
             this.Unpushed,
             this.Stashed,
+            this.Unmerged,
             this.Status,
             this.Remote});
             this.dgvGitSummary.Location = new System.Drawing.Point(6, 32);
@@ -469,6 +472,16 @@
             this.Stashed.ReadOnly = true;
             this.Stashed.Width = 52;
             // 
+            // Unmerged
+            // 
+            this.Unmerged.DataPropertyName = "Unmerged";
+            this.Unmerged.HeaderText = "Unmerged";
+            this.Unmerged.Name = "Unmerged";
+            this.Unmerged.ReadOnly = true;
+            this.Unmerged.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Unmerged.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Unmerged.Width = 81;
+            // 
             // Status
             // 
             this.Status.DataPropertyName = "Status";
@@ -559,8 +572,10 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Unpulled;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Unpushed;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Stashed;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Unmerged;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Remote;
+        private System.ComponentModel.BackgroundWorker backgroundWorker2;
     }
 }
 
