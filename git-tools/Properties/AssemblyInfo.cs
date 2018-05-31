@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("git-tools")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A .NET application that acts as a wrapper around many popular git functions, designed to make using Git easier")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Rodibidably")]
 [assembly: AssemblyProduct("git-tools")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
