@@ -26,7 +26,7 @@ namespace git_tools
             {
                 Repos = new List<Repository>();
                 CurrFolderCount = 0;
-                RootFolderCount = Directory.GetDirectories(root).Length;
+                RootFolderCount = 0;
                 // Process root folder first
                 ProcessFolder(root, root, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, showAll);
                 // Process sub-folders, recursively
@@ -42,14 +42,12 @@ namespace git_tools
             }
             else
             {
+                RootFolderCount += Directory.GetDirectories(path).Length;
                 // Run through selected path and load List<> with results for each sub-folder
                 foreach (string subDir in Directory.GetDirectories(path))
                 {
-                    if (root == path)
-                    {
-                        CurrFolderCount += 1;
-                        worker.ReportProgress((CurrFolderCount * 100) / RootFolderCount);
-                    }
+                    CurrFolderCount += 1;
+                    worker.ReportProgress((CurrFolderCount * 100) / RootFolderCount);
                     // ProcessFolder will load the List<> and return True if it is a Repository
                     if (!ProcessFolder(root, subDir, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, showAll) && recursive)
                     {
