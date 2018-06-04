@@ -196,17 +196,17 @@ namespace git_tools
                 dgvGitSummary.Columns["Unpushed"].Visible = chkRunUnpushed.Checked;
                 dgvGitSummary.Columns["Stashed"].Visible = chkRunStashed.Checked;
                 dgvGitSummary.Columns["Unmerged"].Visible = chkRunUnmerged.Checked;
-                // Cleanup form after processing, to enable fields
-                chkRunFetch.Enabled = true;
-                chkRunUnpulled.Enabled = true;
-                chkRunUnpushed.Enabled = true;
-                chkRunStashed.Enabled = true;
-                chkRunUnmerged.Enabled = true;
-                chkRecursive.Enabled = true;
-                chkShowAll.Enabled = true;
-                btnGitSummary.Enabled = true;
-                tabNav.SelectedTab = tabGitSummary;
             }
+            // Cleanup form after processing, to enable fields
+            chkRunFetch.Enabled = true;
+            chkRunUnpulled.Enabled = true;
+            chkRunUnpushed.Enabled = true;
+            chkRunStashed.Enabled = true;
+            chkRunUnmerged.Enabled = true;
+            chkRecursive.Enabled = true;
+            chkShowAll.Enabled = true;
+            btnGitSummary.Enabled = true;
+            tabNav.SelectedTab = tabGitSummary;
         }
         private void dgvGitSummary_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

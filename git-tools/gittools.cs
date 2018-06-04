@@ -133,7 +133,7 @@ namespace git_tools
                 if (runStashed)
                 {
                     RunCommand("stash list", path, ref stdOutput, ref stdError);
-                    if (stdOutput != "" || stdError != "")
+                    if (stdOutput != "")// || stdError != "")
                     {
                         stashed = true;
                     }
@@ -162,7 +162,15 @@ namespace git_tools
         private string ParseOutput_Status(string stdOutput)
         {
             // Parse string to return Status in readable format
-            string status = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
+            string status = "";
+            if (stdOutput == "")
+            {
+                status = "*** Unknown ***";
+            }
+            else
+            {
+                status = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
+            }
             if (status.IndexOf("Your branch is up to date with 'origin/master'.\n\n") == 0)
             {
                 status = status.Substring(status.IndexOf("\n") + 2);
@@ -176,9 +184,17 @@ namespace git_tools
         }
         private string ParseOutput_Branch(string stdOutput)
         {
+            string branch = "";
             // Parse string to return only the Branch, cleanly
-            string branch = stdOutput.Substring("refs/heads/".Length);
-            branch = branch.Substring(0, branch.Length - 1);
+            if (stdOutput == "")
+            {
+                branch = "*** Unknown ***";
+            }
+            else
+            {
+                branch = stdOutput.Substring("refs/heads/".Length);
+                branch = branch.Substring(0, branch.Length - 1);
+            }
 
             return branch;
         }
