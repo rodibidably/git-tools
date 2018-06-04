@@ -226,7 +226,8 @@ namespace git_tools
         {
             // 
             MessageBox.Show("git-branch-status will be coming next in development", "Coming next in development", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            tabNav.SelectedTab = tabGitSummary;
+
+            tabNav.SelectedTab = tabGitBranchStatus;
         }
     }
 }
