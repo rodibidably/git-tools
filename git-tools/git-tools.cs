@@ -26,7 +26,7 @@ namespace git_tools
             toolTips.SetToolTip(chkRunUnmerged, "Checks local and remote changes (i.e. first run `git branch --no-merged master`); Runs slower");
             toolTips.SetToolTip(chkRecursive, "Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo); Can be slow for large directory trees");
             toolTips.SetToolTip(chkShowAll, "Show all Repositories in List, even those without changes");
-            lblGitSummaryProgress.Text = "";
+            tsStatusLabel.Text = "";
             lnkGitSummaryRoot.Text = "";
             dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgvGitSummary.AutoGenerateColumns = false;
@@ -47,8 +47,8 @@ namespace git_tools
         private void LoadGitTools(string pathGit)
         {
             // Cleanup form (to defaults) before processing
-            lblStatus.Text = "Validating Git is installed/configured...";
-            lblStatus.ForeColor = System.Drawing.Color.Black;
+            tsStatusLabel.Text = "Validating Git is installed/configured...";
+            tsStatusLabel.ForeColor = System.Drawing.Color.Black;
             lnkGitInstall.Visible = false;
             lnkGitLocation.Text = pathGit;
             lblGitVersion.Text = "";
@@ -58,8 +58,8 @@ namespace git_tools
             if (!gt.IsGitInstalled(pathGit))
             {
                 // Prompt User for alternate Git installation location
-                lblStatus.Text = "Git is not installed/configured, or installed in a non-standard location. Please browse to the Git install location (where git-cmd.exe is located).";
-                lblStatus.ForeColor = System.Drawing.Color.Red;
+                tsStatusLabel.Text = "Git is not installed/configured, or installed in a non-standard location. Please browse to the Git install location (where git-cmd.exe is located).";
+                tsStatusLabel.ForeColor = System.Drawing.Color.Red;
                 lnkGitInstall.Visible = true;
             }
             else
@@ -70,14 +70,14 @@ namespace git_tools
                 if (stdError != "")
                 {
                     // Unable to determine Git version. Something may be wrong with the installation
-                    lblStatus.Text = "Git is installed, but appears to not be configured properly (unable to determine Git version). Please check your Git installation / configuration.";
-                    lblStatus.ForeColor = System.Drawing.Color.Red;
+                    tsStatusLabel.Text = "Git is installed, but appears to not be configured properly (unable to determine Git version). Please check your Git installation / configuration.";
+                    tsStatusLabel.ForeColor = System.Drawing.Color.Red;
                     lnkGitInstall.Visible = true;
                 }
                 else
                 {
                     // Everything appears to be working... Woohoo!
-                    lblStatus.Text = "Git appears to be installed. If you would like to use a different location, please Browse to that path.";
+                    tsStatusLabel.Text = "Git appears to be installed. If you would like to use a different location, please Browse to that path.";
                     btnGitSummary.Enabled = true;
                     btnGitBranchStatus.Enabled = true;
                 }
@@ -137,8 +137,11 @@ namespace git_tools
 //                    ConfigurationManager.AppSettings["LastPath"] = fbdPath.SelectedPath;
                     // Cleanup form (to default / selected values / lock fields) before processing
                     lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
-                    lblGitSummaryProgress.Visible = true;
-                    lblGitSummaryProgress.Text = ("Processing: 0%");
+                    tsStatusLabel.Text = ("Processing: ");
+                    tsProgressBar.Visible = true;
+                    tsProgressBar.Maximum = 100;
+                    tsProgressBar.Minimum = 0;
+                    tsProgressBar.Value = 0;
                     dgvGitSummary.Visible = false;
                     chkRunFetch.Enabled = false;
                     chkRunUnpulled.Enabled = false;
@@ -163,23 +166,24 @@ namespace git_tools
         private void bwGitSummary_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // This event handler updates the progress
-            lblGitSummaryProgress.Text = ("Processing: " + e.ProgressPercentage.ToString() + "%");
+            tsProgressBar.Value = e.ProgressPercentage;
         }
         private void bwGitSummary_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // This event handler deals with the results of the background operation
             if (e.Cancelled == true)
             {
-                lblGitSummaryProgress.Text = "Canceled!";
+                tsStatusLabel.Text = "Canceled!";
             }
             else if (e.Error != null)
             {
-                lblGitSummaryProgress.Text = "Error: " + e.Error.Message;
+                tsStatusLabel.Text = "Error: " + e.Error.Message;
             }
             else
             {
                 // Cleanup form after processing, to display results
-                lblGitSummaryProgress.Visible = false;
+                tsStatusLabel.Text = "Processed " + gt.Repos.Count + " repositories";
+                tsProgressBar.Visible = false;
                 dgvGitSummary.Visible = true;
                 // After List<> has been built, now load DataGrid with results
                 dgvGitSummary.DataSource = gt.Repos;
