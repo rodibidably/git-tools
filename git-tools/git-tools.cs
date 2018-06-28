@@ -19,6 +19,11 @@ namespace git_tools
         private void GitTools_Load(object sender, EventArgs e)
         {
             // Set One-Time form values that can't be set through designer and never change
+            toolTips.SetToolTip(btnBrowse, "Browse to the Git install location (where git-cmd.exe is located).");
+            toolTips.SetToolTip(lnkGitLocation, "Git install location (where git-cmd.exe is located).");
+            toolTips.SetToolTip(lblGitVersion, "Git version installed.");
+            toolTips.SetToolTip(btnGitSummary, "Browse to the folder to run git-summary against.");
+            toolTips.SetToolTip(lnkGitSummaryRoot, "The selected folder that git-summary is running against.");
             toolTips.SetToolTip(chkRunFetch, "Checks local and remote changes (i.e. first run `git fetch`); Runs slower");
             toolTips.SetToolTip(chkRunUnpulled, "Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' ..@{u}`); Runs slower");
             toolTips.SetToolTip(chkRunUnpushed, "Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' @{u}..`); Runs slower");
@@ -49,7 +54,6 @@ namespace git_tools
             // Cleanup form (to defaults) before processing
             tsStatusLabel.Text = "Validating Git is installed/configured...";
             tsStatusLabel.ForeColor = System.Drawing.Color.Black;
-            lnkGitInstall.Visible = false;
             lnkGitLocation.Text = pathGit;
             lblGitVersion.Text = "";
             btnGitSummary.Enabled = false;
@@ -60,7 +64,6 @@ namespace git_tools
                 // Prompt User for alternate Git installation location
                 tsStatusLabel.Text = "Git is not installed/configured, or installed in a non-standard location. Please browse to the Git install location (where git-cmd.exe is located).";
                 tsStatusLabel.ForeColor = System.Drawing.Color.Red;
-                lnkGitInstall.Visible = true;
             }
             else
             {
@@ -72,7 +75,6 @@ namespace git_tools
                     // Unable to determine Git version. Something may be wrong with the installation
                     tsStatusLabel.Text = "Git is installed, but appears to not be configured properly (unable to determine Git version). Please check your Git installation / configuration.";
                     tsStatusLabel.ForeColor = System.Drawing.Color.Red;
-                    lnkGitInstall.Visible = true;
                 }
                 else
                 {
@@ -223,6 +225,14 @@ namespace git_tools
             {
                 // Open Default Browser to the GitHub Project
                 System.Diagnostics.Process.Start(dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+            }
+        }
+        private void dgvGitSummary_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == -1)
+            {
+                // Git Branch Status
+                MessageBox.Show("git-branch-status will be coming next in development", "Coming next in development", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         // git-branch-status

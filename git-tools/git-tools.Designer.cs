@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Git_Tools));
             this.tabNav = new System.Windows.Forms.TabControl();
             this.tabGitTools = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lnkGitInstall = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -75,12 +78,10 @@
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.fbdPath = new System.Windows.Forms.FolderBrowserDialog();
             this.bwGitSummary = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.tsStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lnkGitInstall = new System.Windows.Forms.LinkLabel();
-            this.label7 = new System.Windows.Forms.Label();
+            this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -97,11 +98,13 @@
             this.tabNav.Location = new System.Drawing.Point(12, 44);
             this.tabNav.Name = "tabNav";
             this.tabNav.SelectedIndex = 0;
-            this.tabNav.Size = new System.Drawing.Size(760, 422);
+            this.tabNav.ShowToolTips = true;
+            this.tabNav.Size = new System.Drawing.Size(760, 439);
             this.tabNav.TabIndex = 0;
             // 
             // tabGitTools
             // 
+            this.tabGitTools.Controls.Add(this.label8);
             this.tabGitTools.Controls.Add(this.label7);
             this.tabGitTools.Controls.Add(this.lnkGitInstall);
             this.tabGitTools.Controls.Add(this.label4);
@@ -112,16 +115,38 @@
             this.tabGitTools.Location = new System.Drawing.Point(4, 22);
             this.tabGitTools.Name = "tabGitTools";
             this.tabGitTools.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGitTools.Size = new System.Drawing.Size(752, 396);
+            this.tabGitTools.Size = new System.Drawing.Size(752, 413);
             this.tabGitTools.TabIndex = 2;
             this.tabGitTools.Text = "git-tools";
+            this.tabGitTools.ToolTipText = "git-tools is a .NET application that acts as a wrapper around many popular git fu" +
+    "nctions, designed to make using Git easier";
             this.tabGitTools.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 46);
+            this.label7.MaximumSize = new System.Drawing.Size(830, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(199, 13);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "To setup Git, follow the instructions here:";
+            // 
+            // lnkGitInstall
+            // 
+            this.lnkGitInstall.AutoSize = true;
+            this.lnkGitInstall.Location = new System.Drawing.Point(211, 46);
+            this.lnkGitInstall.Name = "lnkGitInstall";
+            this.lnkGitInstall.Size = new System.Drawing.Size(276, 13);
+            this.lnkGitInstall.TabIndex = 21;
+            this.lnkGitInstall.TabStop = true;
+            this.lnkGitInstall.Text = "https://help.github.com/articles/set-up-git/#setting-up-git";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(254, 227);
+            this.label4.Location = new System.Drawing.Point(251, 157);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(140, 13);
             this.label4.TabIndex = 20;
@@ -130,7 +155,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 214);
+            this.label5.Location = new System.Drawing.Point(3, 144);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(600, 13);
             this.label5.TabIndex = 19;
@@ -140,7 +165,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 129);
+            this.label6.Location = new System.Drawing.Point(6, 97);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(604, 13);
             this.label6.TabIndex = 17;
@@ -184,9 +209,11 @@
             this.tabGitSummary.Location = new System.Drawing.Point(4, 22);
             this.tabGitSummary.Name = "tabGitSummary";
             this.tabGitSummary.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGitSummary.Size = new System.Drawing.Size(752, 396);
+            this.tabGitSummary.Size = new System.Drawing.Size(752, 413);
             this.tabGitSummary.TabIndex = 0;
             this.tabGitSummary.Text = "git-summary";
+            this.tabGitSummary.ToolTipText = "git-summary cleanly lists the current status of any Git repositories it finds wit" +
+    "hin any directory (and sub-directories) on your system";
             this.tabGitSummary.UseVisualStyleBackColor = true;
             // 
             // chkRunStashed
@@ -311,17 +338,18 @@
             this.dgvGitSummary.Location = new System.Drawing.Point(6, 58);
             this.dgvGitSummary.Name = "dgvGitSummary";
             this.dgvGitSummary.ReadOnly = true;
-            this.dgvGitSummary.Size = new System.Drawing.Size(740, 332);
+            this.dgvGitSummary.Size = new System.Drawing.Size(740, 349);
             this.dgvGitSummary.TabIndex = 15;
             this.dgvGitSummary.Visible = false;
             this.dgvGitSummary.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGitSummary_CellContentClick);
+            this.dgvGitSummary.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGitSummary_CellDoubleClick);
             // 
             // Folder
             // 
             this.Folder.DataPropertyName = "Folder";
-            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.Blue;
-            this.Folder.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle49.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle49.ForeColor = System.Drawing.Color.Blue;
+            this.Folder.DefaultCellStyle = dataGridViewCellStyle49;
             this.Folder.HeaderText = "Folder";
             this.Folder.Name = "Folder";
             this.Folder.ReadOnly = true;
@@ -370,9 +398,9 @@
             // Modified
             // 
             this.Modified.DataPropertyName = "Modified";
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle22.NullValue = " ";
-            this.Modified.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle50.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle50.NullValue = " ";
+            this.Modified.DefaultCellStyle = dataGridViewCellStyle50;
             this.Modified.HeaderText = "Modified";
             this.Modified.Name = "Modified";
             this.Modified.ReadOnly = true;
@@ -382,9 +410,9 @@
             // Deleted
             // 
             this.Deleted.DataPropertyName = "Deleted";
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle23.NullValue = " ";
-            this.Deleted.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle51.NullValue = " ";
+            this.Deleted.DefaultCellStyle = dataGridViewCellStyle51;
             this.Deleted.HeaderText = "Deleted";
             this.Deleted.Name = "Deleted";
             this.Deleted.ReadOnly = true;
@@ -441,9 +469,9 @@
             // Remote
             // 
             this.Remote.DataPropertyName = "Remote";
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle24.ForeColor = System.Drawing.Color.Blue;
-            this.Remote.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle52.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle52.ForeColor = System.Drawing.Color.Blue;
+            this.Remote.DefaultCellStyle = dataGridViewCellStyle52;
             this.Remote.HeaderText = "Remote";
             this.Remote.Name = "Remote";
             this.Remote.ReadOnly = true;
@@ -455,9 +483,11 @@
             this.tabGitBranchStatus.Location = new System.Drawing.Point(4, 22);
             this.tabGitBranchStatus.Name = "tabGitBranchStatus";
             this.tabGitBranchStatus.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGitBranchStatus.Size = new System.Drawing.Size(752, 396);
+            this.tabGitBranchStatus.Size = new System.Drawing.Size(752, 413);
             this.tabGitBranchStatus.TabIndex = 1;
             this.tabGitBranchStatus.Text = "git-branch-status";
+            this.tabGitBranchStatus.ToolTipText = "git-branch-status shows the divergence relationship between branches for which th" +
+    "e upstream differs from it\'s local counterpart";
             this.tabGitBranchStatus.UseVisualStyleBackColor = true;
             // 
             // btnGitBranchStatus
@@ -542,16 +572,10 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsStatusLabel,
             this.tsProgressBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 465);
+            this.statusStrip.Location = new System.Drawing.Point(0, 483);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(787, 22);
             this.statusStrip.TabIndex = 15;
-            // 
-            // tsProgressBar
-            // 
-            this.tsProgressBar.Name = "tsProgressBar";
-            this.tsProgressBar.Size = new System.Drawing.Size(100, 16);
-            this.tsProgressBar.Visible = false;
             // 
             // tsStatusLabel
             // 
@@ -559,32 +583,27 @@
             this.tsStatusLabel.Size = new System.Drawing.Size(76, 17);
             this.tsStatusLabel.Text = "tsStatusLabel";
             // 
-            // lnkGitInstall
+            // tsProgressBar
             // 
-            this.lnkGitInstall.AutoSize = true;
-            this.lnkGitInstall.Location = new System.Drawing.Point(211, 46);
-            this.lnkGitInstall.Name = "lnkGitInstall";
-            this.lnkGitInstall.Size = new System.Drawing.Size(276, 13);
-            this.lnkGitInstall.TabIndex = 21;
-            this.lnkGitInstall.TabStop = true;
-            this.lnkGitInstall.Text = "https://help.github.com/articles/set-up-git/#setting-up-git";
-            this.lnkGitInstall.Visible = false;
+            this.tsProgressBar.Name = "tsProgressBar";
+            this.tsProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.tsProgressBar.Visible = false;
             // 
-            // label7
+            // label8
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 46);
-            this.label7.MaximumSize = new System.Drawing.Size(830, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(199, 13);
-            this.label7.TabIndex = 22;
-            this.label7.Text = "To setup Git, follow the instructions here:";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 215);
+            this.label8.MaximumSize = new System.Drawing.Size(730, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(729, 195);
+            this.label8.TabIndex = 23;
+            this.label8.Text = resources.GetString("label8.Text");
             // 
             // Git_Tools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(787, 487);
+            this.ClientSize = new System.Drawing.Size(787, 505);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.lnkGitLocation);
             this.Controls.Add(this.label2);
@@ -657,12 +676,12 @@
         private System.Windows.Forms.CheckBox chkRunUnmerged;
         private System.Windows.Forms.Button btnGitBranchStatus;
         private System.Windows.Forms.Label label4;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripProgressBar tsProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel tsStatusLabel;
         private System.Windows.Forms.LinkLabel lnkGitInstall;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }
 
