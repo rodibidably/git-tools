@@ -184,11 +184,12 @@ namespace git_tools
             else
             {
                 // Cleanup form after processing, to display results
-                tsStatusLabel.Text = "Processed " + gt.Repos.Count + " repositories";
                 tsProgressBar.Visible = false;
                 dgvGitSummary.Visible = true;
                 // After List<> has been built, now load DataGrid with results
-                dgvGitSummary.DataSource = gt.Repos;
+                dgvGitSummary.DataSource = gt.Repos.FindAll(repo => (repo.Display == true));
+                tsStatusLabel.Text = "Processed " + gt.Repos.Count + " repositories"
+                    + " (" + dgvGitSummary.RowCount + " displayed)";
                 // Highlight rows with changes
                 foreach (DataGridViewRow row in dgvGitSummary.Rows)
                 {

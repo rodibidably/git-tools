@@ -148,10 +148,7 @@ namespace git_tools
                 string remote = stdOutput;
                 bool diff = (untracked || newFiles || modified != null || deleted != null || unpulled || unpushed || stashed || unmerged || status != "nothing to commit, working tree clean");
                 // Add Repository to List<>
-                if (showAll || diff)
-                {
-                    Repos.Add(new Repository(folder, branch, status, diff, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged, remote));
-                }
+                Repos.Add(new Repository(folder, branch, status, diff, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged, remote, (showAll || diff)));
                 boolReturn = true;
             }
 

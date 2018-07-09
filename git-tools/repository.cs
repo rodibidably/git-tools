@@ -18,6 +18,7 @@
         private bool _Unpushed;
         private bool _Stashed;
         private bool _Unmerged;
+        private string _Remote;
         public bool Diff { get => _Diff; set => _Diff = value; }
         public bool Untracked { get => _Untracked; set => _Untracked = value; }
         public bool NewFiles { get => _NewFiles; set => _NewFiles = value; }
@@ -27,10 +28,11 @@
         public bool Unpushed { get => _Unpushed; set => _Unpushed = value; }
         public bool Stashed { get => _Stashed; set => _Stashed = value; }
         public bool Unmerged { get => _Unmerged; set => _Unmerged = value; }
-        private string _Remote;
         public string Remote { get => _Remote; set => _Remote = value; }
+        private bool _Display;
+        public bool Display { get => _Display; set => _Display = value; }
         // Constructors
-        public Repository(string folder, string branch, string status, bool diff, bool untracked, bool newFiles, int? modified, int? deleted, bool unpulled, bool unpushed, bool stashed, bool unmerged, string remote)
+        public Repository(string folder, string branch, string status, bool diff, bool untracked, bool newFiles, int? modified, int? deleted, bool unpulled, bool unpushed, bool stashed, bool unmerged, string remote, bool display)
         {
             _Folder = folder;
             _Branch = branch;
@@ -45,6 +47,7 @@
             _Stashed = stashed;
             _Unmerged = unmerged;
             _Remote = remote;
+            _Display = display;
         }
         // Methods
     }
