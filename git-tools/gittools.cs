@@ -7,6 +7,7 @@ namespace git_tools
 {
     class GitTools
     {
+        Common blC = new Common();
         // Properties
         public List<Repository> Repos;
         public int CurrFolderCount;
@@ -22,6 +23,8 @@ namespace git_tools
         // Methods
         public void GetRepos(ref BackgroundWorker worker, string root, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool recursive, bool showAll)
         {
+            blC.Trace("_Path: " + _Path);
+
             if (_Path != "")
             {
                 Repos = new List<Repository>();
@@ -35,6 +38,8 @@ namespace git_tools
         }
         private void GitSummarySearch(ref BackgroundWorker worker, string root, string path, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool recursive, bool showAll)
         {
+            blC.Trace("worker.CancellationPending: " + worker.CancellationPending + " | root: " + root + " | path: " + path + " | runFetch: " + runFetch + " | runUnpulled: " + runUnpulled + " | runUnpushed: " + runUnpushed + " | runStashed: " + runStashed + " | runUnmerged: " + runUnmerged + " | recursive: " + recursive + " | showAll: " + showAll);
+
             // ON entry check if we need to stop
             if (worker.CancellationPending)
             {
@@ -59,6 +64,7 @@ namespace git_tools
         }
         public bool ProcessFolder(string root, string path, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool showAll)
         {
+            blC.Trace("root: " + root + " | path: " + path + " | runFetch: " + runFetch + " | runUnpulled: " + runUnpulled + " | runUnpushed: " + runUnpushed + " | runStashed: " + runStashed + " | runUnmerged: " + runUnmerged + " | showAll: " + showAll);
             bool boolReturn = false;
 
             // Setup initial variables, to capture results of instances of RunCommand
@@ -148,16 +154,19 @@ namespace git_tools
                 string remote = stdOutput;
                 bool diff = (untracked || newFiles || modified != null || deleted != null || unpulled || unpushed || stashed || unmerged || status != "nothing to commit, working tree clean");
                 // Add Repository to List<>
-                Repos.Add(new Repository(folder, branch, status, diff, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged, remote, (showAll || diff)));
+                Repos.Add(new Repository(folder, branch, status, diff, untracked, newFiles, modified, deleted, unpulled, unpushed, stashed, unmerged, remote.Trim(), (showAll || diff)));
                 boolReturn = true;
             }
 
+            blC.Trace("boolReturn: " + boolReturn);
             return boolReturn;
         }
         private string ParseOutput_Status(string stdOutput)
         {
-            // Parse string to return Status in readable format
+            blC.Trace("stdOutput.Length: " + stdOutput.Length);
             string status = "";
+
+            // Parse string to return Status in readable format
             if (stdOutput == "")
             {
                 status = "*** Unknown ***";
@@ -175,11 +184,14 @@ namespace git_tools
                 status = status.Substring(0, status.Length - 1);
             }
 
+            blC.Trace("status.Length: " + status.Length);
             return status;
         }
         private string ParseOutput_Branch(string stdOutput)
         {
+            blC.Trace("stdOutput: " + stdOutput);
             string branch = "";
+
             // Parse string to return only the Branch, cleanly
             if (stdOutput == "")
             {
@@ -188,16 +200,18 @@ namespace git_tools
             else
             {
                 branch = stdOutput.Substring("refs/heads/".Length);
-                branch = branch.Substring(0, branch.Length - 1);
+                branch = branch.Substring(0, branch.Length);
             }
 
+            blC.Trace("branch: " + branch);
             return branch;
         }
         public bool RunCommand(string command, string workingDirectory, ref string stdOutput, ref string stdError)
         {
-            // Wrapper to run any command against Git, for a selected folder
+            blC.Trace("command: " + command + " | workingDirectory: " + workingDirectory);
             bool boolReturn = false;
 
+            // Wrapper to run any command against Git, for a selected folder
             if (_Path == "")
             {
                 stdError = _ErrorPathNotSelected;
@@ -221,20 +235,23 @@ namespace git_tools
                 };
                 gitProcess.Start();
                 // pick up STDERR
-                stdError = gitProcess.StandardError.ReadToEnd();
+                stdError = gitProcess.StandardError.ReadToEnd().Trim();
                 // pick up STDOUT
-                stdOutput = gitProcess.StandardOutput.ReadToEnd();
+                stdOutput = gitProcess.StandardOutput.ReadToEnd().Trim();
                 gitProcess.WaitForExit();
                 gitProcess.Close();
                 boolReturn = true;
             }
 
+            blC.Trace("boolReturn: " + boolReturn + " | stdOutput.Length: " + stdOutput.Length + " | stdError.Length: " + stdError.Length);
             return boolReturn;
         }
         public bool IsGitInstalled(string pathGit)
         {
-            // Check selected path for existence of git install files
+            blC.Trace("pathGit: " + pathGit);
             bool boolReturn = false;
+
+            // Check selected path for existence of git install files
             _Path = "";
 
             if (Directory.Exists(pathGit))
@@ -246,6 +263,7 @@ namespace git_tools
                 }
             }
 
+            blC.Trace("boolReturn: " + boolReturn);
             return boolReturn;
         }
     }

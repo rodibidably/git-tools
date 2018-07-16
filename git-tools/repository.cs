@@ -2,6 +2,7 @@
 {
     class Repository
     {
+        Common blC = new Common();
         // Properties
         private string _Folder;
         private string _Branch;
@@ -34,6 +35,8 @@
         // Constructors
         public Repository(string folder, string branch, string status, bool diff, bool untracked, bool newFiles, int? modified, int? deleted, bool unpulled, bool unpushed, bool stashed, bool unmerged, string remote, bool display)
         {
+            blC.Trace("folder: " + folder + " | branch: " + branch + " | status.Length: " + status.Length + " | diff: " + diff + " | untracked: " + untracked + " | newFiles: " + newFiles + " | modified: " + modified + " | deleted: " + deleted + " | unpulled: " + unpulled + " | unpushed: " + unpushed + " | stashed: " + stashed + " | unmerged: " + unmerged + " | remote: " + remote + " | display: " + display);
+
             _Folder = folder;
             _Branch = branch;
             _Status = status;

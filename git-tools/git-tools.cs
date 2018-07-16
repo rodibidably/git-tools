@@ -8,6 +8,7 @@ namespace git_tools
 {
     public partial class Git_Tools : Form
     {
+        Common blC = new Common();
         GitTools gt = new GitTools();
         string stdError = "";
         string stdOutput = "";
@@ -18,6 +19,8 @@ namespace git_tools
         // Load Page | Browse for Git Location
         private void GitTools_Load(object sender, EventArgs e)
         {
+            blC.Trace("");
+
             // Set One-Time form values that can't be set through designer and never change
             toolTips.SetToolTip(btnBrowse, "Browse to the Git install location (where git-cmd.exe is located).");
             toolTips.SetToolTip(lnkGitLocation, "Git install location (where git-cmd.exe is located).");
@@ -40,9 +43,12 @@ namespace git_tools
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
+            blC.Trace("");
+
             // Display the Open File Dialog
             ofdGit.InitialDirectory = gt.Path;
             DialogResult result = ofdGit.ShowDialog();
+            blC.Trace("result: " + result);
             if (result == DialogResult.OK)
             {
                 // Determine if Git is installed in User selected location
@@ -51,6 +57,8 @@ namespace git_tools
         }
         private void LoadGitTools(string pathGit)
         {
+            blC.Trace("pathGit: " + pathGit + " | IsGitInstalled: " + gt.IsGitInstalled(pathGit));
+
             // Cleanup form (to defaults) before processing
             tsStatusLabel.Text = "Validating Git is installed/configured...";
             tsStatusLabel.ForeColor = System.Drawing.Color.Black;
@@ -88,7 +96,10 @@ namespace git_tools
         // Clickable Links
         private void lnkGitLocation_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            blC.Trace("");
+
             // Open Windows Explorer to the Git Install Location
+            blC.Trace("gt.Path: " + gt.Path + " | Exists: " + Directory.Exists(gt.Path));
             if (!Directory.Exists(gt.Path))
             {
                 lnkGitLocation.Text = "";
@@ -101,12 +112,17 @@ namespace git_tools
         }
         private void lnkGitTools_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            blC.Trace("");
+
             // Open Default Browser to the GitHub Project
             System.Diagnostics.Process.Start("https://github.com/rodibidably/git-tools");
         }
         private void lnkGitSummaryRoot_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            blC.Trace("");
+
             // Open Windows Explorer to the selected Git Repository root
+            blC.Trace("lnkGitSummaryRoot: " + lnkGitSummaryRoot.Text + " | Exists: " + Directory.Exists(lnkGitSummaryRoot.Text));
             if (!Directory.Exists(lnkGitSummaryRoot.Text))
             {
                 lnkGitSummaryRoot.Text = "";
@@ -120,7 +136,10 @@ namespace git_tools
         // git-summary
         private void btnGitSummary_Click(object sender, EventArgs e)
         {
+            blC.Trace("");
+
             // Do not allow new process to begin before old process has ended
+            blC.Trace("bwGitSummary.IsBusy: " + bwGitSummary.IsBusy);
             if (bwGitSummary.IsBusy != true)
             {
                 // Set Default Path to the last path used
@@ -131,12 +150,12 @@ namespace git_tools
                 // Display the Open Folder Dialog
                 if (fbdPath.ShowDialog() == DialogResult.OK)
                 {
+                    blC.Trace("SelectedPath: " + fbdPath.SelectedPath);
                     // Write last path used to app.config
                     Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                     configuration.AppSettings.Settings["LastPath"].Value = fbdPath.SelectedPath;
                     configuration.Save(ConfigurationSaveMode.Full, true);
                     ConfigurationManager.RefreshSection("appSettings");
-//                    ConfigurationManager.AppSettings["LastPath"] = fbdPath.SelectedPath;
                     // Cleanup form (to default / selected values / lock fields) before processing
                     lnkGitSummaryRoot.Text = fbdPath.SelectedPath;
                     tsStatusLabel.Text = ("Processing: ");
@@ -144,15 +163,7 @@ namespace git_tools
                     tsProgressBar.Maximum = 100;
                     tsProgressBar.Minimum = 0;
                     tsProgressBar.Value = 0;
-                    dgvGitSummary.Visible = false;
-                    chkRunFetch.Enabled = false;
-                    chkRunUnpulled.Enabled = false;
-                    chkRunUnpushed.Enabled = false;
-                    chkRunStashed.Enabled = false;
-                    chkRunUnmerged.Enabled = false;
-                    chkRecursive.Enabled = false;
-                    chkShowAll.Enabled = false;
-                    btnGitSummary.Enabled = false;
+                    EnableFields(false);
                     // Start the asynchronous operation (essentially: bwGitSummary_DoWork)
                     bwGitSummary.RunWorkerAsync();
                 }
@@ -160,6 +171,8 @@ namespace git_tools
         }
         private void bwGitSummary_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            blC.Trace(" ");
+
             // This event handler is where the time-consuming work is done
             BackgroundWorker worker = sender as BackgroundWorker;
             // Recursively run through selected path to build List<>
@@ -167,11 +180,15 @@ namespace git_tools
         }
         private void bwGitSummary_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            blC.Trace("e.ProgressPercentage: " + e.ProgressPercentage);
+
             // This event handler updates the progress
             tsProgressBar.Value = e.ProgressPercentage;
         }
         private void bwGitSummary_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            blC.Trace("e.Cancelled: " + e.Cancelled + " | (e.Error != null): " + (e.Error != null) + " | e.Result: " + e.Result);
+
             // This event handler deals with the results of the background operation
             if (e.Cancelled == true)
             {
@@ -185,19 +202,20 @@ namespace git_tools
             {
                 // Cleanup form after processing, to display results
                 tsProgressBar.Visible = false;
-                dgvGitSummary.Visible = true;
                 // After List<> has been built, now load DataGrid with results
                 dgvGitSummary.DataSource = gt.Repos.FindAll(repo => (repo.Display == true));
-                tsStatusLabel.Text = "Processed " + gt.Repos.Count + " repositories"
-                    + " (" + dgvGitSummary.RowCount + " displayed)";
+                tsStatusLabel.Text = "Processed " + gt.Repos.Count + " repositories" + " (" + dgvGitSummary.RowCount + " displayed)";
                 // Highlight rows with changes
+                int highlightRows = 0;
                 foreach (DataGridViewRow row in dgvGitSummary.Rows)
                 {
                     if ((bool?)row.Cells["Diff"].Value == true)
                     {
+                        highlightRows++;
                         row.DefaultCellStyle.BackColor = System.Drawing.Color.Beige;
                     }
                 }
+                blC.Trace("gt.Repos.Count: " + gt.Repos.Count + " | dgvGitSummary.RowCount: " + dgvGitSummary.RowCount + " | highlightRows: " + highlightRows);
                 // Hide columns that were not collected
                 dgvGitSummary.Columns["Unpulled"].Visible = chkRunUnpulled.Checked;
                 dgvGitSummary.Columns["Unpushed"].Visible = chkRunUnpushed.Checked;
@@ -205,31 +223,46 @@ namespace git_tools
                 dgvGitSummary.Columns["Unmerged"].Visible = chkRunUnmerged.Checked;
             }
             // Cleanup form after processing, to enable fields
-            chkRunFetch.Enabled = true;
-            chkRunUnpulled.Enabled = true;
-            chkRunUnpushed.Enabled = true;
-            chkRunStashed.Enabled = true;
-            chkRunUnmerged.Enabled = true;
-            chkRecursive.Enabled = true;
-            chkShowAll.Enabled = true;
-            btnGitSummary.Enabled = true;
+            EnableFields(true);
             tabNav.SelectedTab = tabGitSummary;
+        }
+        private void EnableFields(bool enabled)
+        {
+            blC.Trace("enabled: " + enabled);
+
+            dgvGitSummary.Visible = enabled;
+            chkRunFetch.Enabled = enabled;
+            chkRunUnpulled.Enabled = enabled;
+            chkRunUnpushed.Enabled = enabled;
+            chkRunStashed.Enabled = enabled;
+            chkRunUnmerged.Enabled = enabled;
+            chkRecursive.Enabled = enabled;
+            chkShowAll.Enabled = enabled;
+            btnGitSummary.Enabled = enabled;
         }
         private void dgvGitSummary_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            blC.Trace("");
+
+            blC.Trace("RowIndex: " + e.RowIndex + " | ColumnIndex: " + e.ColumnIndex);
             if (e.RowIndex >= 0 && e.ColumnIndex == 0)
             {
                 // Open Windows Explorer to the selected Git Repository
+                blC.Trace("Process.Start - lnkGitSummaryRoot: " + lnkGitSummaryRoot.Text + " | Value: " + dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
                 Process.Start(lnkGitSummaryRoot.Text + dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
             }
             else if (e.RowIndex >= 0 && e.ColumnIndex == 12)
             {
                 // Open Default Browser to the GitHub Project
-                System.Diagnostics.Process.Start(dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+                blC.Trace("Process.Start - Value: " + dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+                Process.Start(dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
             }
         }
         private void dgvGitSummary_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            blC.Trace("");
+
+            blC.Trace("RowIndex: " + e.RowIndex + " | ColumnIndex: " + e.ColumnIndex);
             if (e.RowIndex >= 0 && e.ColumnIndex == -1)
             {
                 // Git Branch Status
@@ -239,6 +272,8 @@ namespace git_tools
         // git-branch-status
         private void btnGitBranchStatus_Click(object sender, EventArgs e)
         {
+            blC.Trace("");
+
             // 
             MessageBox.Show("git-branch-status will be coming next in development", "Coming next in development", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
