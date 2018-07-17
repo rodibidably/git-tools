@@ -253,7 +253,9 @@ namespace git_tools
         }
         private void DisplayTimeElapsed()
         {
-            tsStatusLabel.Text += "   |   Processing Time: " + (System.DateTime.Now - pStart).TotalSeconds + " seconds";
+            double timeElapsed = (System.DateTime.Now - pStart).TotalSeconds;
+            blC.Trace("timeElapsed: " + timeElapsed);
+            tsStatusLabel.Text += "   |   Processing Time: " + timeElapsed + " seconds";
         }
         private void EnableFields(bool enabled)
         {
