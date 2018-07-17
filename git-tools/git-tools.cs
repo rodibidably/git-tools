@@ -12,6 +12,7 @@ namespace git_tools
         GitTools gt = new GitTools();
         string stdError = "";
         string stdOutput = "";
+        DateTime pStart;
         public Git_Tools()
         {
             InitializeComponent();
@@ -21,6 +22,7 @@ namespace git_tools
         {
             blC.Trace("");
 
+            pStart = System.DateTime.Now;
             // Set One-Time form values that can't be set through designer and never change
             toolTips.SetToolTip(btnBrowse, "Browse to the Git install location (where git-cmd.exe is located).");
             toolTips.SetToolTip(lnkGitLocation, "Git install location (where git-cmd.exe is located).");
@@ -40,6 +42,7 @@ namespace git_tools
             dgvGitSummary.AutoGenerateColumns = false;
             // Determine if Git is installed in default location
             LoadGitTools("C:\\Program Files\\Git");
+            DisplayTimeElapsed();
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -51,8 +54,10 @@ namespace git_tools
             blC.Trace("result: " + result);
             if (result == DialogResult.OK)
             {
+                pStart = System.DateTime.Now;
                 // Determine if Git is installed in User selected location
                 LoadGitTools(Path.GetDirectoryName(ofdGit.FileName));
+                DisplayTimeElapsed();
             }
         }
         private void LoadGitTools(string pathGit)
@@ -150,6 +155,7 @@ namespace git_tools
                 // Display the Open Folder Dialog
                 if (fbdPath.ShowDialog() == DialogResult.OK)
                 {
+                    pStart = System.DateTime.Now;
                     blC.Trace("SelectedPath: " + fbdPath.SelectedPath);
                     // Write last path used to app.config
                     Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -225,21 +231,7 @@ namespace git_tools
             // Cleanup form after processing, to enable fields
             EnableFields(true);
             tabNav.SelectedTab = tabGitSummary;
-        }
-        private void EnableFields(bool enabled)
-        {
-            blC.Trace("enabled: " + enabled);
-
-            dgvGitSummary.Visible = enabled;
-            btnBrowse.Enabled = enabled;
-            chkRunFetch.Enabled = enabled;
-            chkRunUnpulled.Enabled = enabled;
-            chkRunUnpushed.Enabled = enabled;
-            chkRunStashed.Enabled = enabled;
-            chkRunUnmerged.Enabled = enabled;
-            chkRecursive.Enabled = enabled;
-            chkShowAll.Enabled = enabled;
-            btnGitSummary.Enabled = enabled;
+            DisplayTimeElapsed();
         }
         private void dgvGitSummary_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -258,6 +250,25 @@ namespace git_tools
                 blC.Trace("Process.Start - Value: " + dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
                 Process.Start(dgvGitSummary.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
             }
+        }
+        private void DisplayTimeElapsed()
+        {
+            tsStatusLabel.Text += "   |   Processing Time: " + (System.DateTime.Now - pStart).TotalSeconds + " seconds";
+        }
+        private void EnableFields(bool enabled)
+        {
+            blC.Trace("enabled: " + enabled);
+
+            dgvGitSummary.Visible = enabled;
+            btnBrowse.Enabled = enabled;
+            chkRunFetch.Enabled = enabled;
+            chkRunUnpulled.Enabled = enabled;
+            chkRunUnpushed.Enabled = enabled;
+            chkRunStashed.Enabled = enabled;
+            chkRunUnmerged.Enabled = enabled;
+            chkRecursive.Enabled = enabled;
+            chkShowAll.Enabled = enabled;
+            btnGitSummary.Enabled = enabled;
         }
         private void dgvGitSummary_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
