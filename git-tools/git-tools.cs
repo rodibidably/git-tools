@@ -231,6 +231,7 @@ namespace git_tools
             blC.Trace("enabled: " + enabled);
 
             dgvGitSummary.Visible = enabled;
+            btnBrowse.Enabled = enabled;
             chkRunFetch.Enabled = enabled;
             chkRunUnpulled.Enabled = enabled;
             chkRunUnpushed.Enabled = enabled;
