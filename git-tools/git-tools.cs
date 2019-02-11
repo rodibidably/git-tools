@@ -40,6 +40,15 @@ namespace git_tools
             lnkGitSummaryRoot.Text = "";
             dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgvGitSummary.AutoGenerateColumns = false;
+            // Set Default Values where applicable
+            blC.Trace("GitSummaryDefaults: " + ConfigurationManager.AppSettings["GitSummaryDefaults"]);
+            chkRunFetch.Checked = ConfigurationManager.AppSettings["GitSummaryDefaults"].Contains("chkRunFetch");
+            chkRunUnpulled.Checked = ConfigurationManager.AppSettings["GitSummaryDefaults"].Contains("chkRunUnpulled");
+            chkRunUnpushed.Checked = ConfigurationManager.AppSettings["GitSummaryDefaults"].Contains("chkRunUnpushed");
+            chkRunStashed.Checked = ConfigurationManager.AppSettings["GitSummaryDefaults"].Contains("chkRunStashed");
+            chkRunUnmerged.Checked = ConfigurationManager.AppSettings["GitSummaryDefaults"].Contains("chkRunUnmerged");
+            chkRecursive.Checked = ConfigurationManager.AppSettings["GitSummaryDefaults"].Contains("chkRecursive");
+            chkShowAll.Checked = ConfigurationManager.AppSettings["GitSummaryDefaults"].Contains("chkShowAll");
             // Determine if Git is installed in default location
             LoadGitTools("C:\\Program Files\\Git");
             DisplayTimeElapsed();
@@ -282,6 +291,45 @@ namespace git_tools
                 // Git Branch Status
                 MessageBox.Show("git-branch-status will be coming next in development", "Coming next in development", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private void btnGitSummarySaveDefaults_Click(object sender, EventArgs e)
+        {
+            blC.Trace("");
+
+            // Save current values for Defaults to app.config
+            string strDefaults = "";
+            if (chkRunFetch.Checked)
+            {
+                strDefaults += "chkRunFetch,";
+            }
+            if (chkRunUnpulled.Checked)
+            {
+                strDefaults += "chkRunUnpulled,";
+            }
+            if (chkRunUnpushed.Checked)
+            {
+                strDefaults += "chkRunUnpushed,";
+            }
+            if (chkRunStashed.Checked)
+            {
+                strDefaults += "chkRunStashed,";
+            }
+            if (chkRunUnmerged.Checked)
+            {
+                strDefaults += "chkRunUnmerged,";
+            }
+            if (chkRecursive.Checked)
+            {
+                strDefaults += "chkRecursive,";
+            }
+            if (chkShowAll.Checked)
+            {
+                strDefaults += "chkShowAll,";
+            }
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+            config.AppSettings.Settings.Remove("GitSummaryDefaults");
+            config.AppSettings.Settings.Add("GitSummaryDefaults", strDefaults);
+            config.Save(ConfigurationSaveMode.Minimal);
         }
         // git-branch-status
         private void btnGitBranchStatus_Click(object sender, EventArgs e)

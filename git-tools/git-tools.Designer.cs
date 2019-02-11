@@ -83,6 +83,8 @@
             this.tsStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.btnGitSummarySaveDefaults = new System.Windows.Forms.Button();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -207,6 +209,7 @@
             // 
             // tabGitSummary
             // 
+            this.tabGitSummary.Controls.Add(this.btnGitSummarySaveDefaults);
             this.tabGitSummary.Controls.Add(this.chkRunStashed);
             this.tabGitSummary.Controls.Add(this.chkRunUnmerged);
             this.tabGitSummary.Controls.Add(this.chkRunUnpushed);
@@ -250,8 +253,6 @@
             // chkRunUnpushed
             // 
             this.chkRunUnpushed.AutoSize = true;
-            this.chkRunUnpushed.Checked = true;
-            this.chkRunUnpushed.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkRunUnpushed.Location = new System.Drawing.Point(193, 6);
             this.chkRunUnpushed.Name = "chkRunUnpushed";
             this.chkRunUnpushed.Size = new System.Drawing.Size(102, 17);
@@ -262,8 +263,6 @@
             // chkRunUnpulled
             // 
             this.chkRunUnpulled.AutoSize = true;
-            this.chkRunUnpulled.Checked = true;
-            this.chkRunUnpulled.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkRunUnpulled.Location = new System.Drawing.Point(92, 6);
             this.chkRunUnpulled.Name = "chkRunUnpulled";
             this.chkRunUnpulled.Size = new System.Drawing.Size(95, 17);
@@ -274,8 +273,6 @@
             // chkShowAll
             // 
             this.chkShowAll.AutoSize = true;
-            this.chkShowAll.Checked = true;
-            this.chkShowAll.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowAll.Location = new System.Drawing.Point(587, 6);
             this.chkShowAll.Name = "chkShowAll";
             this.chkShowAll.Size = new System.Drawing.Size(101, 17);
@@ -286,8 +283,6 @@
             // chkRecursive
             // 
             this.chkRecursive.AutoSize = true;
-            this.chkRecursive.Checked = true;
-            this.chkRecursive.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkRecursive.Location = new System.Drawing.Point(507, 6);
             this.chkRecursive.Name = "chkRecursive";
             this.chkRecursive.Size = new System.Drawing.Size(74, 17);
@@ -318,7 +313,7 @@
             // lnkGitSummaryRoot
             // 
             this.lnkGitSummaryRoot.AutoSize = true;
-            this.lnkGitSummaryRoot.Location = new System.Drawing.Point(105, 26);
+            this.lnkGitSummaryRoot.Location = new System.Drawing.Point(204, 26);
             this.lnkGitSummaryRoot.Name = "lnkGitSummaryRoot";
             this.lnkGitSummaryRoot.Size = new System.Drawing.Size(100, 13);
             this.lnkGitSummaryRoot.TabIndex = 16;
@@ -600,6 +595,16 @@
             this.tsProgressBar.Size = new System.Drawing.Size(100, 16);
             this.tsProgressBar.Visible = false;
             // 
+            // btnGitSummarySaveDefaults
+            // 
+            this.btnGitSummarySaveDefaults.Location = new System.Drawing.Point(105, 26);
+            this.btnGitSummarySaveDefaults.Name = "btnGitSummarySaveDefaults";
+            this.btnGitSummarySaveDefaults.Size = new System.Drawing.Size(93, 26);
+            this.btnGitSummarySaveDefaults.TabIndex = 32;
+            this.btnGitSummarySaveDefaults.Text = "Save Defaults";
+            this.btnGitSummarySaveDefaults.UseVisualStyleBackColor = true;
+            this.btnGitSummarySaveDefaults.Click += new System.EventHandler(this.btnGitSummarySaveDefaults_Click);
+            // 
             // Git_Tools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -684,6 +689,8 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker2;
+        private System.Windows.Forms.Button btnGitSummarySaveDefaults;
     }
 }
 
