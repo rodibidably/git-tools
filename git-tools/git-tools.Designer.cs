@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Git_Tools));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabNav = new System.Windows.Forms.TabControl();
             this.tabGitTools = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
@@ -45,6 +45,7 @@
             this.lnkGitTools = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.tabGitSummary = new System.Windows.Forms.TabPage();
+            this.btnGitSummarySaveDefaults = new System.Windows.Forms.Button();
             this.chkRunStashed = new System.Windows.Forms.CheckBox();
             this.chkRunUnmerged = new System.Windows.Forms.CheckBox();
             this.chkRunUnpushed = new System.Windows.Forms.CheckBox();
@@ -82,9 +83,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tsStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.btnGitSummarySaveDefaults = new System.Windows.Forms.Button();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -230,6 +228,16 @@
     "hin any directory (and sub-directories) on your system";
             this.tabGitSummary.UseVisualStyleBackColor = true;
             // 
+            // btnGitSummarySaveDefaults
+            // 
+            this.btnGitSummarySaveDefaults.Location = new System.Drawing.Point(105, 26);
+            this.btnGitSummarySaveDefaults.Name = "btnGitSummarySaveDefaults";
+            this.btnGitSummarySaveDefaults.Size = new System.Drawing.Size(93, 26);
+            this.btnGitSummarySaveDefaults.TabIndex = 32;
+            this.btnGitSummarySaveDefaults.Text = "Save Defaults";
+            this.btnGitSummarySaveDefaults.UseVisualStyleBackColor = true;
+            this.btnGitSummarySaveDefaults.Click += new System.EventHandler(this.btnGitSummarySaveDefaults_Click);
+            // 
             // chkRunStashed
             // 
             this.chkRunStashed.AutoSize = true;
@@ -353,9 +361,9 @@
             // Folder
             // 
             this.Folder.DataPropertyName = "Folder";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Blue;
-            this.Folder.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Blue;
+            this.Folder.DefaultCellStyle = dataGridViewCellStyle5;
             this.Folder.HeaderText = "Folder";
             this.Folder.Name = "Folder";
             this.Folder.ReadOnly = true;
@@ -404,9 +412,9 @@
             // Modified
             // 
             this.Modified.DataPropertyName = "Modified";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.NullValue = " ";
-            this.Modified.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.NullValue = " ";
+            this.Modified.DefaultCellStyle = dataGridViewCellStyle6;
             this.Modified.HeaderText = "Modified";
             this.Modified.Name = "Modified";
             this.Modified.ReadOnly = true;
@@ -416,9 +424,9 @@
             // Deleted
             // 
             this.Deleted.DataPropertyName = "Deleted";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.NullValue = " ";
-            this.Deleted.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.NullValue = " ";
+            this.Deleted.DefaultCellStyle = dataGridViewCellStyle7;
             this.Deleted.HeaderText = "Deleted";
             this.Deleted.Name = "Deleted";
             this.Deleted.ReadOnly = true;
@@ -475,9 +483,9 @@
             // Remote
             // 
             this.Remote.DataPropertyName = "Remote";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Blue;
-            this.Remote.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Blue;
+            this.Remote.DefaultCellStyle = dataGridViewCellStyle8;
             this.Remote.HeaderText = "Remote";
             this.Remote.Name = "Remote";
             this.Remote.ReadOnly = true;
@@ -595,16 +603,6 @@
             this.tsProgressBar.Size = new System.Drawing.Size(100, 16);
             this.tsProgressBar.Visible = false;
             // 
-            // btnGitSummarySaveDefaults
-            // 
-            this.btnGitSummarySaveDefaults.Location = new System.Drawing.Point(105, 26);
-            this.btnGitSummarySaveDefaults.Name = "btnGitSummarySaveDefaults";
-            this.btnGitSummarySaveDefaults.Size = new System.Drawing.Size(93, 26);
-            this.btnGitSummarySaveDefaults.TabIndex = 32;
-            this.btnGitSummarySaveDefaults.Text = "Save Defaults";
-            this.btnGitSummarySaveDefaults.UseVisualStyleBackColor = true;
-            this.btnGitSummarySaveDefaults.Click += new System.EventHandler(this.btnGitSummarySaveDefaults_Click);
-            // 
             // Git_Tools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -688,8 +686,6 @@
         private System.Windows.Forms.LinkLabel lnkGitInstall;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.Button btnGitSummarySaveDefaults;
     }
 }
