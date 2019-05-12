@@ -81,8 +81,9 @@
             this.fbdPath = new System.Windows.Forms.FolderBrowserDialog();
             this.bwGitSummary = new System.ComponentModel.BackgroundWorker();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.tsStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsStatusDetails = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.tsStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabNav.SuspendLayout();
             this.tabGitTools.SuspendLayout();
             this.tabGitSummary.SuspendLayout();
@@ -585,23 +586,31 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsStatusLabel,
-            this.tsProgressBar});
+            this.tsProgressBar,
+            this.tsStatusDetails});
             this.statusStrip.Location = new System.Drawing.Point(0, 483);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(787, 22);
             this.statusStrip.TabIndex = 15;
             // 
-            // tsStatusLabel
+            // tsStatusDetails
             // 
-            this.tsStatusLabel.Name = "tsStatusLabel";
-            this.tsStatusLabel.Size = new System.Drawing.Size(76, 17);
-            this.tsStatusLabel.Text = "tsStatusLabel";
+            this.tsStatusDetails.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.tsStatusDetails.Name = "tsStatusDetails";
+            this.tsStatusDetails.Size = new System.Drawing.Size(83, 17);
+            this.tsStatusDetails.Text = "tsStatusDetails";
             // 
             // tsProgressBar
             // 
             this.tsProgressBar.Name = "tsProgressBar";
             this.tsProgressBar.Size = new System.Drawing.Size(100, 16);
             this.tsProgressBar.Visible = false;
+            // 
+            // tsStatusLabel
+            // 
+            this.tsStatusLabel.Name = "tsStatusLabel";
+            this.tsStatusLabel.Size = new System.Drawing.Size(76, 17);
+            this.tsStatusLabel.Text = "tsStatusLabel";
             // 
             // Git_Tools
             // 
@@ -682,11 +691,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripProgressBar tsProgressBar;
-        private System.Windows.Forms.ToolStripStatusLabel tsStatusLabel;
+        private System.Windows.Forms.ToolStripStatusLabel tsStatusDetails;
         private System.Windows.Forms.LinkLabel lnkGitInstall;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnGitSummarySaveDefaults;
+        private System.Windows.Forms.ToolStripStatusLabel tsStatusLabel;
     }
 }
 

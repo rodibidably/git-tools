@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+
 namespace git_tools
 {
     class GitTools
@@ -21,7 +22,7 @@ namespace git_tools
             _Path = "";
         }
         // Methods
-        public void GetRepos(ref BackgroundWorker worker, string root, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool recursive, bool showAll)
+        public void GetRepos(ref BackgroundWorker worker, string root, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool recursive, bool showAll, System.Windows.Forms.ToolStripStatusLabel statusDetails)
         {
             blC.Trace("_Path: " + _Path);
 
@@ -31,12 +32,12 @@ namespace git_tools
                 CurrFolderCount = 0;
                 RootFolderCount = 0;
                 // Process root folder first
-                ProcessFolder(root, root, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, showAll);
+                ProcessFolder(root, root, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, showAll, statusDetails);
                 // Process sub-folders, recursively
-                GitSummarySearch(ref worker, root, root, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, recursive, showAll);
+                GitSummarySearch(ref worker, root, root, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, recursive, showAll, statusDetails);
             }
         }
-        private void GitSummarySearch(ref BackgroundWorker worker, string root, string path, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool recursive, bool showAll)
+        private void GitSummarySearch(ref BackgroundWorker worker, string root, string path, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool recursive, bool showAll, System.Windows.Forms.ToolStripStatusLabel statusDetails)
         {
             blC.Trace("worker.CancellationPending: " + worker.CancellationPending + " | root: " + root + " | path: " + path + " | runFetch: " + runFetch + " | runUnpulled: " + runUnpulled + " | runUnpushed: " + runUnpushed + " | runStashed: " + runStashed + " | runUnmerged: " + runUnmerged + " | recursive: " + recursive + " | showAll: " + showAll);
 
@@ -54,20 +55,21 @@ namespace git_tools
                     CurrFolderCount += 1;
                     worker.ReportProgress((CurrFolderCount * 100) / RootFolderCount);
                     // ProcessFolder will load the List<> and return True if it is a Repository
-                    if (!ProcessFolder(root, subDir, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, showAll) && recursive)
+                    if (!ProcessFolder(root, subDir, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, showAll, statusDetails) && recursive)
                     {
                         // Run recursively if the parent folder was NOT a Repository and recursive = true
-                        GitSummarySearch(ref worker, root, subDir, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, recursive, showAll);
+                        GitSummarySearch(ref worker, root, subDir, runFetch, runUnpulled, runUnpushed, runStashed, runUnmerged, recursive, showAll, statusDetails);
                     }
                 }
             }
         }
-        public bool ProcessFolder(string root, string path, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool showAll)
+        public bool ProcessFolder(string root, string path, bool runFetch, bool runUnpulled, bool runUnpushed, bool runStashed, bool runUnmerged, bool showAll, System.Windows.Forms.ToolStripStatusLabel statusDetails)
         {
             blC.Trace("root: " + root + " | path: " + path + " | runFetch: " + runFetch + " | runUnpulled: " + runUnpulled + " | runUnpushed: " + runUnpushed + " | runStashed: " + runStashed + " | runUnmerged: " + runUnmerged + " | showAll: " + showAll);
             bool boolReturn = false;
 
             // Setup initial variables, to capture results of instances of RunCommand
+            statusDetails.Text = path;
             string stdOutput = "";
             string stdError = "";
             // Get initial Status (determine if Folder is a Repository)

@@ -37,6 +37,7 @@ namespace git_tools
             toolTips.SetToolTip(chkRecursive, "Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo); Can be slow for large directory trees");
             toolTips.SetToolTip(chkShowAll, "Show all Repositories in List, even those without changes");
             tsStatusLabel.Text = "";
+            tsStatusDetails.Text = "";
             lnkGitSummaryRoot.Text = "";
             dgvGitSummary.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgvGitSummary.AutoGenerateColumns = false;
@@ -191,7 +192,7 @@ namespace git_tools
             // This event handler is where the time-consuming work is done
             BackgroundWorker worker = sender as BackgroundWorker;
             // Recursively run through selected path to build List<>
-            gt.GetRepos(ref worker, lnkGitSummaryRoot.Text, chkRunFetch.Checked, chkRunUnpulled.Checked, chkRunUnpushed.Checked, chkRunStashed.Checked, chkRunUnmerged.Checked, chkRecursive.Checked, chkShowAll.Checked);
+            gt.GetRepos(ref worker, lnkGitSummaryRoot.Text, chkRunFetch.Checked, chkRunUnpulled.Checked, chkRunUnpushed.Checked, chkRunStashed.Checked, chkRunUnmerged.Checked, chkRecursive.Checked, chkShowAll.Checked, tsStatusDetails);
         }
         private void bwGitSummary_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -204,6 +205,7 @@ namespace git_tools
         {
             blC.Trace("e.Cancelled: " + e.Cancelled + " | (e.Error != null): " + (e.Error != null) + " | e.Result: " + e.Result);
 
+            tsStatusDetails.Text = "";
             // This event handler deals with the results of the background operation
             if (e.Cancelled == true)
             {
