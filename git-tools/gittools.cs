@@ -149,7 +149,11 @@ namespace git_tools
                     RunCommand("branch --no-merged master", path, ref stdOutput, ref stdError);
                     if (stdOutput != "" || stdError != "")
                     {
-                        unmerged = true;
+                        RunCommand("branch --no-merged main", path, ref stdOutput, ref stdError);
+                        if (stdOutput != "" || stdError != "")
+                        {
+                            unmerged = true;
+                        }
                     }
                 }
                 RunCommand("remote get-url origin", path, ref stdOutput, ref stdError);
@@ -178,6 +182,10 @@ namespace git_tools
                 status = stdOutput.Substring(stdOutput.IndexOf("\n") + 1);
             }
             if (status.IndexOf("Your branch is up to date with 'origin/master'.\n\n") == 0)
+            {
+                status = status.Substring(status.IndexOf("\n") + 2);
+            }
+            if (status.IndexOf("Your branch is up to date with 'origin/main'.\n\n") == 0)
             {
                 status = status.Substring(status.IndexOf("\n") + 2);
             }

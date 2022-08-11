@@ -33,7 +33,7 @@ namespace git_tools
             toolTips.SetToolTip(chkRunUnpulled, "Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' ..@{u}`); Runs slower");
             toolTips.SetToolTip(chkRunUnpushed, "Checks local and remote changes (i.e. first run `git log --pretty=format:'%h' @{u}..`); Runs slower");
             toolTips.SetToolTip(chkRunStashed, "Checks local and remote changes (i.e. first run `git stash list`); Runs slower");
-            toolTips.SetToolTip(chkRunUnmerged, "Checks local and remote changes (i.e. first run `git branch --no-merged master`); Runs slower");
+            toolTips.SetToolTip(chkRunUnmerged, "Checks local and remote changes (i.e. first run `git branch --no-merged master/main`); Runs slower");
             toolTips.SetToolTip(chkRecursive, "Will look for Git repos recursively within the directory tree (does not search sub folders under a Git repo); Can be slow for large directory trees");
             toolTips.SetToolTip(chkShowAll, "Show all Repositories in List, even those without changes");
             tsStatusLabel.Text = "";
